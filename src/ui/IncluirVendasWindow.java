@@ -51,6 +51,7 @@ public class IncluirVendasWindow extends Window {
 		// CONFIGURANDO OS EDITS DE INSERÇÃO DE DADOS
 		// sabor
 		editSabor = new Edit();
+		editSabor.setEditable(false);
 
 		// codigo
 		editCodigo = new Edit("999999999");
@@ -61,11 +62,13 @@ public class IncluirVendasWindow extends Window {
 		editValorUnidade = new Edit("999999999,99");
 		editValorUnidade.setMode(Edit.CURRENCY, true);
 		editValorUnidade.setValidChars("0123456789");
+		editValorUnidade.setEditable(false);
 
 		// valorVenda
 		editValorVenda = new Edit("999999999,99");
 		editValorVenda.setMode(Edit.CURRENCY, true);
 		editValorVenda.setValidChars("0123456789");
+		editValorVenda.setEditable(false);
 
 		// valorTotal
 		editValorTotal = new Edit("999999999,99");
@@ -76,11 +79,13 @@ public class IncluirVendasWindow extends Window {
 		editEstoqueVenda = new Edit("999999999,99");
 		editEstoqueVenda.setMode(Edit.CURRENCY, true);
 		editEstoqueVenda.setValidChars("0123456789");
+		editEstoqueVenda.setEditable(true);
 
 		// estoqueAtivo
 		editEstoqueAtivo = new Edit("999999999");
 		editEstoqueAtivo.setMode(Edit.NORMAL, true);
 		editEstoqueAtivo.setValidChars("0123456789");
+		editEstoqueAtivo.setEditable(false);
 
 		// estoqueVendido
 		editEstoqueVendido = new Edit("999999999");
@@ -103,7 +108,13 @@ public class IncluirVendasWindow extends Window {
 		this();
 		this.atualizando = true;
 		editCodigo.setText(String.valueOf(venda.codigo));
-		editSabor.setText(String.valueOf(venda.sabor));
+		editSabor.setText(venda.sabor);
+		editValorUnidade.setText(String.valueOf(venda.valorUnidade));
+		editValorVenda.setText(String.valueOf(venda.valorVenda));
+		editValorTotal.setText(String.valueOf(venda.valorTotal));
+		editEstoqueAtivo.setText(String.valueOf(venda.estoqueAtivo));
+		editEstoqueVenda.setText(String.valueOf(venda.estoqueVenda));
+		editEstoqueVendido.setText(String.valueOf(venda.estoqueVendido));
 	}
 
 	@Override
@@ -181,85 +192,154 @@ public class IncluirVendasWindow extends Window {
 		super.onEvent(event);
 	}
 
-	/*
-	 * public void insertVenda() { try { Venda venda = screenToDomain(); if (venda
-	 * == null) return; if (VendaDAO.insertVenda(venda)) { new MessageBox("Info",
-	 * "Venda Inserida").popup(); } } catch (Exception e) { e.printStackTrace(); } }
-	 * 
-	 * public void atualizarVenda() { try { Venda venda = screenToDomain(); if
-	 * (venda == null) return; if (VendaDAO.atualizarVenda(venda)) { new
-	 * MessageBox("Info", "Venda Atualizada").popup(); } } catch (Exception e) {
-	 * e.printStackTrace(); } }
-	 * 
-	 * public void excluirVenda() { try { Venda venda = screenToDomain(); if (venda
-	 * == null) return; if (VendaDAO.excluirVenda(venda)) { new MessageBox("Info",
-	 * "Venda Excluída!").popup(); } } catch (SQLException e) {
-	 * Vm.debug(e.getMessage()); } catch (Exception e) { Vm.debug(e.getMessage()); }
-	 * }
-	 * 
-	 * private Venda screenToDomain() throws Exception { String codigo =
-	 * editCodigo.getText(); String sabor = editSabor.getText(); String valorUnidade
-	 * = editValorUnidade.getText(); String valorVenda = editValorVenda.getText();
-	 * String valorTotal = editValorTotal.getText(); String estoqueAtivo =
-	 * editEstoqueAtivo.getText(); String estoqueVenda = editEstoqueVenda.getText();
-	 * String estoqueVendido = editEstoqueVendido.getText(); if
-	 * (!validateFields(codigo, sabor, valorUnidade, valorVenda, valorTotal,
-	 * estoqueAtivo, estoqueVenda, estoqueVendido)) throw new
-	 * Exception("Campos inválidos");
-	 * 
-	 * Venda venda = createDomain(codigo, sabor, valorUnidade, valorVenda,
-	 * valorTotal, estoqueAtivo, estoqueVenda, estoqueVendido); return venda; }
-	 * 
-	 * private Sorvete createDomain(String codigo, String sabor, String
-	 * valorUnidade, String valorVenda, String valorTotal, String estoqueAtivo,
-	 * String estoqueVenda, String estoqueVendido) { double codigoAsInt = 0; double
-	 * valorUnidadeAsDouble = 0; double valorVendaAsDouble = 0; double
-	 * valorTotalAsDouble = 0; double estoqueAtivoAsDouble = 0; double
-	 * estoqueVendaAsDouble = 0; double estoqueVendidoAsDouble = 0; try { codigo =
-	 * codigo.replace(",", "."); codigoAsInt = Double.parseDouble(codigo);
-	 * valorUnidade = valorUnidade.replace(",", "."); valorUnidadeAsDouble =
-	 * Double.parseDouble(valorUnidade); valorVenda = valorVenda.replace(",", ".");
-	 * valorVendaAsDouble = Double.parseDouble(valorVenda); valorTotal =
-	 * valorTotal.replace(",", "."); valorTotalAsDouble =
-	 * Double.parseDouble(valorTotal); estoqueAtivo = estoqueAtivo.replace(",",
-	 * "."); estoqueAtivoAsDouble = Double.parseDouble(estoqueAtivo); estoqueVenda =
-	 * estoqueVenda.replace(",", "."); estoqueVendaAsDouble =
-	 * Double.parseDouble(estoqueVenda); estoqueVendido =
-	 * estoqueVendido.replace(",", "."); estoqueVendidoAsDouble =
-	 * Double.parseDouble(estoqueVendido); } catch (Exception e) {
-	 * Vm.debug(e.getMessage()); return null; } Venda venda = new Venda();
-	 * venda.codigo = (int) codigoAsInt; venda.sabor = sabor; venda.valorUnidade =
-	 * valorUnidadeAsDouble; venda.valorVenda = valorVendaAsDouble; venda.valorTotal
-	 * = valorTotalAsDouble; venda.estoqueAtivo = estoqueAtivoAsDouble;
-	 * venda.estoqueVenda = estoqueVendaAsDouble; venda.estoqueVendido =
-	 * estoqueVendidoAsDouble; return venda; }
-	 * 
-	 * private boolean validateFields(String codigo, String sabor, String
-	 * valorUnidade, String valorVenda, String valorTotal, String estoqueAtivo,
-	 * String estoqueVenda, String estoqueVendido) { if (codigo.isEmpty()) { new
-	 * MessageBox("Atenção", "Digite um codigo!").popup(); ; return false; }
-	 * 
-	 * if (sabor.isEmpty()) { new MessageBox("Atenção", "Digite um sabor!").popup();
-	 * ; return false; }
-	 * 
-	 * if (valorUnidade.isEmpty()) { new MessageBox("Atenção",
-	 * "Digite o valor do Sorvete!").popup(); ; return false; }
-	 * 
-	 * if (valorVenda.isEmpty()) { new MessageBox("Atenção",
-	 * "Digite o valor da Venda!").popup(); ; return false; }
-	 * 
-	 * if (valorTotal.isEmpty()) { new MessageBox("Atenção",
-	 * "Digite um valor Total!").popup(); ; return false; }
-	 * 
-	 * if (estoqueAtivo.isEmpty()) { new MessageBox("Atenção",
-	 * "Digite o Estoque Ativo!").popup(); ; return false; }
-	 * 
-	 * if (estoqueVenda.isEmpty()) { new MessageBox("Atenção",
-	 * "Digite a quantidade de produto(s) a se(rem) vendido(s)!").popup(); ; return
-	 * false; }
-	 * 
-	 * if (estoqueVendido.isEmpty()) { new MessageBox("Atenção",
-	 * "Digite a quantidade de vendas totais!").popup(); ; return false; } return
-	 * true; }
-	 */
+	public void insertVenda() {
+		try {
+			Venda venda = screenToDomain();
+			if (venda == null)
+				return;
+			if (VendaDAO.insertVenda(venda)) {
+				new MessageBox("Info", "Venda Inserida").popup();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void atualizarVenda() {
+		try {
+			Venda venda = screenToDomain();
+			if (venda == null)
+				return;
+			if (VendaDAO.atualizarVenda(venda)) {
+				new MessageBox("Info", "Venda Atualizada").popup();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void excluirVenda() {
+		try {
+			Venda venda = screenToDomain();
+			if (venda == null)
+				return;
+			if (VendaDAO.excluirVenda(venda)) {
+				new MessageBox("Info", "Venda Excluída!").popup();
+			}
+		} catch (SQLException e) {
+			Vm.debug(e.getMessage());
+		} catch (Exception e) {
+			Vm.debug(e.getMessage());
+		}
+	}
+
+	private Venda screenToDomain() throws Exception {
+		String codigo = editCodigo.getText();
+		String sabor = editSabor.getText();
+		String valorUnidade = editValorUnidade.getText();
+		String valorVenda = editValorVenda.getText();
+		String valorTotal = editValorTotal.getText();
+		String estoqueAtivo = editEstoqueAtivo.getText();
+		String estoqueVenda = editEstoqueVenda.getText();
+		String estoqueVendido = editEstoqueVendido.getText();
+		if (!validateFields(codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo, estoqueVenda,
+				estoqueVendido))
+			throw new Exception("Campos inválidos");
+
+		Venda venda = createDomain(codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo, estoqueVenda, estoqueVendido);
+		return venda;
+	}
+
+	private Venda createDomain(String codigo, String sabor, String valorUnidade, String valorVenda, String valorTotal,
+			String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+		double codigoAsInt = 0;
+		double valorUnidadeAsDouble = 0;
+		double valorVendaAsDouble = 0;
+		double valorTotalAsDouble = 0;
+		double estoqueAtivoAsDouble = 0;
+		double estoqueVendaAsDouble = 0;
+		double estoqueVendidoAsDouble = 0;
+		try {
+			codigo = codigo.replace(",", ".");
+			codigoAsInt = Double.parseDouble(codigo);
+			valorUnidade = valorUnidade.replace(",", ".");
+			valorUnidadeAsDouble = Double.parseDouble(valorUnidade);
+			valorVenda = valorVenda.replace(",", ".");
+			valorVendaAsDouble = Double.parseDouble(valorVenda);
+			valorTotal = valorTotal.replace(",", ".");
+			valorTotalAsDouble = Double.parseDouble(valorTotal);
+			estoqueAtivo = estoqueAtivo.replace(",", ".");
+			estoqueAtivoAsDouble = Double.parseDouble(estoqueAtivo);
+			estoqueVenda = estoqueVenda.replace(",", ".");
+			estoqueVendaAsDouble = Double.parseDouble(estoqueVenda);
+			estoqueVendido = estoqueVendido.replace(",", ".");
+			estoqueVendidoAsDouble = Double.parseDouble(estoqueVendido);
+		} catch (Exception e) {
+			Vm.debug(e.getMessage());
+			return null;
+		}
+		Venda venda = new Venda();
+		venda.codigo = (int) codigoAsInt;
+		venda.sabor = sabor;
+		venda.valorUnidade = valorUnidadeAsDouble;
+		venda.valorVenda = valorVendaAsDouble;
+		venda.valorTotal = valorTotalAsDouble;
+		venda.estoqueAtivo = estoqueAtivoAsDouble;
+		venda.estoqueVenda = estoqueVendaAsDouble;
+		venda.estoqueVendido = estoqueVendidoAsDouble;
+		return venda;
+	}
+
+	private boolean validateFields(String codigo, String sabor, String valorUnidade, String valorVenda,
+			String valorTotal, String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+		if (codigo.isEmpty()) {
+			new MessageBox("Atenção", "Digite um codigo!").popup();
+			;
+			return false;
+		}
+
+		if (sabor.isEmpty()) {
+			new MessageBox("Atenção", "Digite um sabor!").popup();
+			;
+			return false;
+		}
+
+		if (valorUnidade.isEmpty()) {
+			new MessageBox("Atenção", "Digite o valor do Sorvete!").popup();
+			;
+			return false;
+		}
+
+		if (valorVenda.isEmpty()) {
+			new MessageBox("Atenção", "Digite o valor da Venda!").popup();
+			;
+			return false;
+		}
+
+		if (valorTotal.isEmpty()) {
+			new MessageBox("Atenção", "Digite um valor Total!").popup();
+			;
+			return false;
+		}
+
+		if (estoqueAtivo.isEmpty()) {
+			new MessageBox("Atenção", "Digite o Estoque Ativo!").popup();
+			;
+			return false;
+		}
+
+		if (estoqueVenda.isEmpty()) {
+			new MessageBox("Atenção", "Digite a quantidade de produto(s) a se(rem) vendido(s)!").popup();
+			;
+			return false;
+		}
+
+		if (estoqueVendido.isEmpty()) {
+			new MessageBox("Atenção", "Digite a quantidade de vendas totais!").popup();
+			;
+			return false;
+		}
+		return true;
+	}
+
 }

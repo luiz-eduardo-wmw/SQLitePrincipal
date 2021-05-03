@@ -22,7 +22,7 @@ public class ListarVendasWindow extends Window {
 
 		// FUNCOES SISTEMAS
 		btVoltar = new Button("Voltar");
-		btIncluirNovaVenda = new Button("Inlcuir Nova Venda");
+		btIncluirNovaVenda = new Button("Incluir Nova Venda");
 		btLogo = new Button(new Image("/resources/logoWMW 80x40.png"), Button.BORDER_NONE);
 		// FIM
 
