@@ -73,10 +73,10 @@ public class IncluirSorvetesWindow extends Window {
 		add(editSabor, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
 
 		add(new Label("Valor"), LEFT + 10, AFTER + 10);
-		add(editValor, LEFT + 10, AFTER + 5);
+		add(editValor, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
 
 		add(new Label("Estoque"), LEFT + 10, AFTER + 10);
-		add(editEstoque, LEFT + 10, AFTER + 5);
+		add(editEstoque, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
 
 		if (atualizando) {
 			add(btAtualizar, CENTER - 20, AFTER + 20);
@@ -153,7 +153,6 @@ public class IncluirSorvetesWindow extends Window {
 		Vm.debug(e.getMessage());
 		}
 	}
-
 	
 	private Sorvete screenToDomain() throws Exception {
 		String codigo = editCodigo.getText();

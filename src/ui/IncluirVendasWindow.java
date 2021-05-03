@@ -52,8 +52,8 @@ public class IncluirVendasWindow extends Window {
 		editValorTotal.setValidChars("0123456789");
 		
 		//estoqueVenda
-		editEstoqueVenda = new Edit("999999999");
-		editEstoqueVenda.setMode(Edit.NORMAL, true);
+		editEstoqueVenda = new Edit("999999999,99");
+		editEstoqueVenda.setMode(Edit.CURRENCY, true);
 		editEstoqueVenda.setValidChars("0123456789");
 		
 		//estoqueAtivo
@@ -78,22 +78,25 @@ public class IncluirVendasWindow extends Window {
 		
 		//CRIANDO A TELA COM OS EDITS E LABEL
 		add(new Label("Codigo"), LEFT + 10, TOP + 10);
-		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
+		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 		
+		//deverá importar da outra tabela com base no código digitado
 		add(new Label("Sabor"), LEFT + 10, AFTER + 10);
-		add(editSabor, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
+		add(editSabor, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
+		//deverá importar da outra tabela com base no código digitado
 		add(new Label("Valor do Sorvete"), LEFT + 10, AFTER + 10);
-		add(editValorUnidade, LEFT + 10, AFTER + 5);
+		add(editValorUnidade, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
-		add(new Label("Total da Venda"), LEFT + 10, AFTER + 10);
-		add(editValorVenda, LEFT + 10, AFTER + 5);
-		
+		//deverá importar da outra tabela com base no código digitado
 		add(new Label("Estoque do Sorvete"), LEFT + 10, AFTER + 10);
-		add(editEstoqueAtivo, LEFT + 10, AFTER + 5);
+		add(editEstoqueAtivo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 		
 		add(new Label("Quantidade da Venda"), LEFT + 10, AFTER + 10);
-		add(editEstoqueVenda, LEFT + 10, AFTER + 5);
+		add(editEstoqueVenda, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
+		
+		add(new Label("Total da Venda"), LEFT + 10, AFTER + 10);
+		add(editValorVenda, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 		// FIM
 		
 		// ADICIONANDO NA TELA O BOTÃO VOLTAR
