@@ -30,7 +30,7 @@ public class MainMenu extends MainWindow {
 		
 		btSair = new Button("Sair");
 		
-		btLogo = new Button (new Image("/resources/logoWMW.png"), Button.BORDER_NONE);
+		btLogo = new Button (new Image("/resources/logoWMW 120X60.png"), Button.BORDER_NONE);
 	}
 	
 	@Override
@@ -46,9 +46,19 @@ public class MainMenu extends MainWindow {
 		switch (event.type) {
 		case ControlEvent.PRESSED:
 			if (event.target == btSorvetes) {
-				btSorvetesClick();
+				try {
+					btSorvetesClick();
+				} catch (ImageException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else if (event.target == btVenda) {
-				btVendaClick();
+				try {
+					btVendaClick();
+				} catch (ImageException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else if (event.target == btSair) {
 				exit(AFTER);
@@ -60,13 +70,13 @@ public class MainMenu extends MainWindow {
 		super.onEvent(event);
 	}
 
-	private void btVendaClick() {
+	private void btVendaClick() throws ImageException, IOException {
 		ListarVendasWindow vendasWindow;
 		vendasWindow = new ListarVendasWindow();
 		vendasWindow.popup();
 	}
 
-	private void btSorvetesClick() {
+	private void btSorvetesClick() throws ImageException, IOException {
 		ListarSorvetesWindow sorvetesWindow;
 		try {
 			sorvetesWindow = new ListarSorvetesWindow();
