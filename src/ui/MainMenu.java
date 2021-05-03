@@ -3,10 +3,13 @@ package ui;
 
 import java.sql.SQLException;
 
+import totalcross.io.IOException;
 import totalcross.ui.Button;
 import totalcross.ui.MainWindow;
 import totalcross.ui.event.ControlEvent;
 import totalcross.ui.event.Event;
+import totalcross.ui.image.Image;
+import totalcross.ui.image.ImageException;
 import util.DatabaseManager;
 
 public class MainMenu extends MainWindow {
@@ -17,20 +20,25 @@ public class MainMenu extends MainWindow {
 	
 	private Button btSair;
 	
-	public MainMenu() throws SQLException {
+	private Button btLogo;
+	
+	public MainMenu() throws SQLException, ImageException, IOException {
 		DatabaseManager.loadTabelas();
 		btSorvetes = new Button("Sorvetes");
 		
 		btVenda = new Button("Vendas");
 		
 		btSair = new Button("Sair");
+		
+		btLogo = new Button (new Image("/resources/logoWMW.png"), Button.BORDER_NONE);
 	}
 	
 	@Override
 	public void initUI() {
-		add(btSorvetes, LEFT + 10, TOP + 10, FILL - 10, PREFERRED);		
+		add(btLogo, CENTER, TOP + 10);
+		add(btSorvetes, LEFT + 10, AFTER + 10, FILL - 10, PREFERRED);		
 		add(btVenda, LEFT + 10, AFTER + 10, FILL - 10, PREFERRED);		
-		add(btSair, LEFT + 10, BOTTOM - 10, FILL - 10, PREFERRED);		
+		add(btSair, LEFT + 10, BOTTOM - 10, FILL - 10, PREFERRED);
 	}
 	
 	@Override
@@ -54,12 +62,8 @@ public class MainMenu extends MainWindow {
 
 	private void btVendaClick() {
 		ListarVendasWindow vendasWindow;
-		try {
-			vendasWindow = new ListarVendasWindow();
-			vendasWindow.popup();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		vendasWindow = new ListarVendasWindow();
+		vendasWindow.popup();
 	}
 
 	private void btSorvetesClick() {

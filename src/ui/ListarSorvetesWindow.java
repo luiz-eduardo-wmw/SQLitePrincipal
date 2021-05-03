@@ -60,7 +60,7 @@ public class ListarSorvetesWindow extends Window {
 			sorveteContainer.appId = index ++;
 			sorveteContainer.setBorderStyle(BORDER_SIMPLE);
 			listaSorvetes.add(sorveteContainer, LEFT + 10, AFTER + 3, listaSorvetes.getWidth() -30, 50);
-			for (int dadosIndex = 0; dadosIndex < 3; dadosIndex++) {
+			for (int dadosIndex = 0; dadosIndex < 4; dadosIndex++) {
 				int horizontalPosition = dadosIndex % 2 == 0 ? LEFT + 10 : RIGHT - 10;
 				int verticalPosition = dadosIndex % 2 == 0 ? AFTER : SAME;
 				sorveteContainer.add(new Label(dados[dadosIndex]), horizontalPosition, verticalPosition);
@@ -69,11 +69,11 @@ public class ListarSorvetesWindow extends Window {
 	}
 	
 	private String [] sorveteToArray(Sorvete sorvete) {
-		String[] dadosArray = new String[3];
-		//dadosArray[0] = String.valueOf(sorvete.codigo);
-		dadosArray[0] = sorvete.sabor;
-		dadosArray[1] = String.valueOf(sorvete.valorUnidade);
-		dadosArray[2] = String.valueOf(sorvete.estoqueAtivo);
+		String[] dadosArray = new String[4];
+		dadosArray[0] = String.valueOf(sorvete.codigo);
+		dadosArray[2] = sorvete.sabor;
+		dadosArray[1] = "R$" + String.valueOf(sorvete.valorUnidade);
+		dadosArray[3] = String.valueOf(sorvete.estoqueAtivo);
 		return dadosArray;
 	}
 	
