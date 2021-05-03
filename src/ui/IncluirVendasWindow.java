@@ -169,23 +169,34 @@ public class IncluirVendasWindow extends Window {
 				this.unpop();
 				break;
 			}
+			break;
 
 		case ControlEvent.FOCUS_OUT:
+			Sorvete sorvete = null;
+			
 			if (event.target == editCodigo && !editCodigo.getText().isEmpty()) {
 				int codigo = Integer.parseInt(editCodigo.getText());
-				Sorvete sorvete;
 				try {
 					sorvete = sorveteDAO.findByPrimaryKey(codigo);
 					System.out.println(sorvete);
 					editSabor.setText(sorvete.sabor);
 					editEstoqueAtivo.setText("" + sorvete.estoqueAtivo);
 					editValorUnidade.setText("" + sorvete.valorUnidade);
-
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-
 				break;
+			} if (event.target == editEstoqueVenda) {
+				//editEstoqueVenda.getText();
+				
+				
+					double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
+					double valorUnidade = Double.parseDouble(editValorUnidade.getText().replace(",", "."));
+					double valorTotal = estoqueVenda * valorUnidade;
+					System.out.println(valorTotal);
+					editValorVenda.setText("" + valorTotal);
+				
+				//editValorVenda.setText("" + editEstoqueVenda.get());
 			}
 
 		}
