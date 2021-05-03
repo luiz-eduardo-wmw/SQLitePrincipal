@@ -30,7 +30,7 @@ public class ListarSorvetesWindow extends Window {
 
 	// VENDAS
 	private Button btListaPedidos;
-	private Button btIncluirVendas;
+	private Button btIncluirNovaVenda;
 	// FIM DE VENDAS
 
 	// FUNCOES SISTEMAS
@@ -48,7 +48,7 @@ public class ListarSorvetesWindow extends Window {
 
 		// VENDAS
 		btListaPedidos = new Button("Lista de Pedidos");
-		btIncluirVendas = new Button("Nova Venda");
+		btIncluirNovaVenda = new Button("Nova Venda");
 		// FIM DE VENDAS
 
 		// FUNCOES SISTEMAS
@@ -106,12 +106,12 @@ public class ListarSorvetesWindow extends Window {
 		}
 
 		// FUNCOES SISTEMAS
-		add(btVoltar, RIGHT - 30, BOTTOM - 10);
+		add(btVoltar, RIGHT - 10, BOTTOM - 10);
 		// FIM FUNCOES SISTEMAS
 
 		// VENDAS
-		add(btListaPedidos, LEFT + 30, BOTTOM - 10);
-		add(btIncluirVendas, AFTER + 10, BOTTOM - 10);
+		add(btListaPedidos, LEFT + 10, BOTTOM - 10);
+		add(btIncluirNovaVenda, AFTER + 10, BOTTOM - 10);
 		// FIM DE VENDAS
 
 		// SORVETES
@@ -150,13 +150,19 @@ public class ListarSorvetesWindow extends Window {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-			} /*
-				 * else if (event.target == btListaPedidos) {
-				 * System.out.println("VOCÊ CLICOU EM LISTA DE PEDIDOS"); ListarVendasWindow
-				 * vendasWindow; try { vendasWindow = new ListarVendasWindow();
-				 * vendasWindow.popup(); } catch (SQLException e) { e.printStackTrace(); } }
-				 */ else if (event.target == btVoltar) {
+			} else if (event.target == btListaPedidos) {
+				ListarVendasWindow vendasWindow;
+				try {
+					vendasWindow = new ListarVendasWindow();
+					vendasWindow.popup();
+				} catch (ImageException | IOException e) {
+					e.printStackTrace();
+				}
+
+			} else if (event.target == btVoltar) {
 				this.unpop();
+			} else if (event.target == btIncluirNovaVenda) {
+				btIncluirNovaVendaClick();
 			}
 			break;
 		case PenEvent.PEN_DOWN:
@@ -186,4 +192,13 @@ public class ListarSorvetesWindow extends Window {
 		super.onEvent(event);
 	}
 
+	private void btIncluirNovaVendaClick() {
+		IncluirVendasWindow vendasWindow;
+		try {
+			vendasWindow = new IncluirVendasWindow();
+			vendasWindow.popup();
+		} catch (ImageException | IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

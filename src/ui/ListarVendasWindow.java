@@ -30,11 +30,13 @@ public class ListarVendasWindow extends Window {
 
 	@Override
 	public void initUI() {
+		
 		// INSERINDO A LOGO E O TEXTO
 		add(btLogo, LEFT + 10, TOP);
 		add(new Label("RELATORIO DE VENDAS"), AFTER + 65, SAME + 10, FILL - 10, PREFERRED);
 		// FIM
-		add(btIncluirNovaVenda, LEFT + 10, BOTTOM - 10, FILL - 240, PREFERRED);
+		
+		add(btIncluirNovaVenda, LEFT + 10, BOTTOM - 10);
 		add(btVoltar, RIGHT - 10, SAME);
 	}
 
@@ -51,19 +53,22 @@ public class ListarVendasWindow extends Window {
 			if (event.target == btVoltar) {
 				this.unpop();
 			} else if (event.target == btIncluirNovaVenda) {
-				IncluirVendasWindow vendasWindow;
-				try {
-					vendasWindow = new IncluirVendasWindow();
-					vendasWindow.popup();
-				} catch (ImageException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				btIncluirNovaVendaClick();
 			}
 			break;
 		default:
 			break;
 		}
 		super.onEvent(event);
+	}
+
+	private void btIncluirNovaVendaClick() {
+		IncluirVendasWindow vendasWindow;
+		try {
+			vendasWindow = new IncluirVendasWindow();
+			vendasWindow.popup();
+		} catch (ImageException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

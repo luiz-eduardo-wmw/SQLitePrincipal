@@ -7,10 +7,10 @@ public class Sorvete {
 	public double valorUnidade;
 	public int estoqueAtivo;
 	
-	/*@Override
+	@Override
 	public String toString() {
-		return "[" + codigo + "]";
-	}*/
+		return "[" + sabor + "]";
+	}
 	
 	
 	

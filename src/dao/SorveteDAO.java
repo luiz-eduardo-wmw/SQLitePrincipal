@@ -13,6 +13,8 @@ import util.DatabaseManager;
 
 public class SorveteDAO {
 
+	
+	
 	public boolean insertSorvete(Sorvete sorvete) throws SQLException {
 		PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("INSERT INTO SORVETES VALUES (?, ?, ?, ?)");
 		ps.setInt(1, sorvete.codigo);
@@ -41,7 +43,25 @@ public class SorveteDAO {
 		
 	}
 
-
+	public Sorvete findByPrimaryKey(int codigo) throws SQLException {
+		Sorvete sorvete = new Sorvete();
+		
+		PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("SELECT * FROM SORVETES WHERE CODIGO = ?");
+		ps.setInt(1, codigo);
+		ResultSet rs = ps.executeQuery();
+		
+		if (rs.next()) {
+			sorvete.codigo = rs.getInt(1);
+			sorvete.sabor = rs.getString(2);
+			sorvete.valorUnidade = rs.getDouble(3);
+			sorvete.estoqueAtivo = rs.getInt(4);
+		} else sorvete = null;
+		
+		rs.close();
+		ps.close();
+		return sorvete;
+	}
+	
 	public boolean excluirSorvete(Sorvete sorvete) throws SQLException {
 		PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("DELETE FROM SORVETES WHERE CODIGO = ?");
 		ps.setInt(1, sorvete.codigo);

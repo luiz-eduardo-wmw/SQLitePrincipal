@@ -94,13 +94,14 @@ public class IncluirSorvetesWindow extends Window {
 		add(new Label("Estoque"), LEFT + 10, AFTER + 10);
 		add(editEstoque, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
 
+		add(btVoltar, RIGHT - 10, BOTTOM - 10);
+
 		if (atualizando) {
-			add(btAtualizar, CENTER - 20, AFTER + 20);
-			add(btExcluir, AFTER + 20, SAME);
+			add(btAtualizar, BEFORE - 10, SAME);
+			add(btExcluir, BEFORE - 10, SAME);
 		} else {
-			add(btInserir, CENTER, AFTER + 20);
+			add(btInserir, BEFORE - 10, SAME);
 		}
-		add(btVoltar, RIGHT - 20, BOTTOM - 20);
 	}
 
 	@Override
