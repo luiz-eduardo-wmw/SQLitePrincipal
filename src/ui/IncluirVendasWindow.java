@@ -35,6 +35,8 @@ public class IncluirVendasWindow extends Window {
 	// CRIANDO OS BOTÕES DO SISTEMA
 	private Button btVoltar;
 	private Button btEnviar;
+	private Button btAtualizar;
+	private Button btExcluir;
 	private Button btLogo;
 	// FIM
 
@@ -99,6 +101,8 @@ public class IncluirVendasWindow extends Window {
 		// CONFIGURANDO OS BOTÕES DO SISTEMA
 		btVoltar = new Button("Voltar");
 		btEnviar = new Button("Enviar");
+		btAtualizar = new Button("Atualizar");
+		btExcluir = new Button("Excluir");
 		btLogo = new Button(new Image("/resources/logoWMW 80x40.png"), Button.BORDER_NONE);
 		// FIM
 
@@ -150,8 +154,14 @@ public class IncluirVendasWindow extends Window {
 
 		// ADICIONANDO NA TELA O BOTÃO VOLTAR
 		add(btVoltar, RIGHT - 10, BOTTOM - 10);
-		add(btEnviar, BEFORE - 10, BOTTOM - 10);
 		// FIM
+		
+		if (atualizando) {
+			add(btAtualizar, BEFORE - 10, SAME);
+			add(btExcluir, BEFORE - 10, SAME);
+		} else {
+			add(btEnviar, BEFORE - 10, SAME);
+		}
 
 	}
 
@@ -196,6 +206,12 @@ public class IncluirVendasWindow extends Window {
 				this.unpop();
 			} else if (event.target == btEnviar) {
 				insertVenda();
+				unpop();
+			} else if (event.target == btAtualizar) {
+				atualizarVenda();
+				unpop();
+			} else if (event.target == btExcluir) {
+				excluirVenda();
 				unpop();
 			}
 		default:
