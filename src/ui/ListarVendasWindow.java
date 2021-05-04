@@ -87,8 +87,7 @@ public class ListarVendasWindow extends Window {
 	@Override
 	public void initUI() {
 		montaTela();
-		add(btIncluirNovaVenda, LEFT + 10, BOTTOM - 10);
-		add(btVoltar, RIGHT - 10, SAME);
+		
 	}
 
 	public void montaTela() {
@@ -99,8 +98,10 @@ public class ListarVendasWindow extends Window {
 		add(listaVendas, LEFT, AFTER + 10, FILL, getScrollContainerSizeSorvetes());
 		try {
 			loadListVendas();
-			add(btLogo, LEFT + 10, TOP);
-			add(new Label("RELATORIO DE VENDAS"), AFTER + 65, SAME + 10, FILL - 10, PREFERRED);
+			/*
+			 * add(btLogo, CENTER + 10, TOP); add(new Label("RELATORIO DE VENDAS"), AFTER +
+			 * 65, SAME + 10, FILL - 10, PREFERRED);
+			 */
 		} catch (SQLException e) {
 			Vm.debug(e.getMessage());
 		}
@@ -110,10 +111,8 @@ public class ListarVendasWindow extends Window {
 		// FIM FUNCOES SISTEMAS
 
 		// VENDAS
-		//add(btListaVendas, LEFT + 10, BOTTOM - 10);
-		add(btIncluirNovaVenda, AFTER + 10, BOTTOM - 10);
+		add(btIncluirNovaVenda, LEFT + 10, BOTTOM - 10);		
 		// FIM DE VENDAS
-
 	}
 
 	private int getScrollContainerSizeSorvetes() {
