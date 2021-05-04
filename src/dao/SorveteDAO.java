@@ -13,8 +13,6 @@ import totalcross.sys.Vm;
 import util.DatabaseManager;
 
 public class SorveteDAO {
-
-	
 	
 	public boolean insertSorvete(Sorvete sorvete) throws SQLException {
 		PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("INSERT INTO SORVETES VALUES (?, ?, ?, ?)");

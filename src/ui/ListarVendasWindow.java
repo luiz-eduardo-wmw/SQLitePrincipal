@@ -149,7 +149,8 @@ public class ListarVendasWindow extends Window {
 			} else if (event.target == btIncluirNovaVenda) {
 				btIncluirNovaVendaClick();
 			} else if (event.target == btRelatorioDeVendas) {
-				  // ABRIR TELA COM RELATIO E NESTERELATORIO SOMAR A QUANTIDADE VENDIDA, O VALOR GANHO
+				// ABRIR TELA COM RELATIO E NESTERELATORIO SOMAR A QUANTIDADE VENDIDA, O VALOR GANHO
+				btRelatorioDeVenda();
 			}else if (event.target == btListaDeSorvetes) {
 				try {
 					btSorvetesClick();
@@ -183,6 +184,16 @@ public class ListarVendasWindow extends Window {
 			break;
 		}
 		super.onEvent(event);
+	}
+
+	private void btRelatorioDeVenda() {
+		ListarRelatorioWindow relatorioWindow;
+		try {
+			relatorioWindow = new ListarRelatorioWindow();
+			relatorioWindow.popup();
+		} catch (ImageException | IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void btSorvetesClick() throws ImageException, IOException {
