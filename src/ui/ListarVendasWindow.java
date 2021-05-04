@@ -117,9 +117,9 @@ public class ListarVendasWindow extends Window {
 		// FIM FUNCOES SISTEMAS
 
 		// VENDAS
-		add(btIncluirNovaVenda, LEFT + 10, SAME);		
-		add(btListaDeSorvetes, AFTER + 7, SAME);
-		add(btRelatorioDeVendas, AFTER + 7, SAME);
+		add(btListaDeSorvetes, LEFT + 10, SAME);
+		add(btRelatorioDeVendas, AFTER + 10, SAME);
+		add(btIncluirNovaVenda, AFTER + 10, SAME);		
 		// FIM DE VENDAS
 	}
 
