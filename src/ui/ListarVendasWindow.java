@@ -151,11 +151,27 @@ public class ListarVendasWindow extends Window {
 				btIncluirNovaVendaClick();
 			} else if (event.target == btRelatorioDeVendas) {
 				// ABRIR TELA COM RELATIO E NESTERELATORIO SOMAR A QUANTIDADE VENDIDA, O VALOR GANHO
-				btRelatorioDeVenda();
+				try {
+					btRelatorioDeVenda();
+					reloadListVendas();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				try {
+					reloadListVendas();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}else if (event.target == btListaDeSorvetes) {
 				try {
 					btSorvetesClick();
-				} catch (ImageException | IOException e) {
+					reloadListVendas();
+				} catch (SQLException | ImageException | IOException e) {
+					e.printStackTrace();
+				}
+				try {
+					reloadListVendas();
+				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
@@ -187,7 +203,7 @@ public class ListarVendasWindow extends Window {
 		super.onEvent(event);
 	}
 
-	private void btRelatorioDeVenda() {
+	private void btRelatorioDeVenda() throws SQLException {
 		ListarRelatorioWindow relatorioWindow;
 		try {
 			relatorioWindow = new ListarRelatorioWindow();

@@ -272,6 +272,7 @@ public class IncluirVendasWindow extends Window {
 		super.onEvent(event);
 	}
 
+
 	public void atualizandoEstoque(int codigo, double estoquePosVenda) {
 		try {
 			if (sorveteDAO.atualizarEstoqueSorvete(codigo, estoquePosVenda)) {

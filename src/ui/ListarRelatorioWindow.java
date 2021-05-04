@@ -1,9 +1,17 @@
 package ui;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import dao.SorveteDAO;
+import dao.VendaDAO;
+import domain.Venda;
 import totalcross.io.IOException;
 import totalcross.sys.Settings;
 import totalcross.ui.Button;
+import totalcross.ui.Container;
 import totalcross.ui.Label;
+import totalcross.ui.ScrollContainer;
 import totalcross.ui.Window;
 import totalcross.ui.event.ControlEvent;
 import totalcross.ui.event.Event;
@@ -16,27 +24,48 @@ public class ListarRelatorioWindow extends Window {
 	private Button btVoltar;
 	private Button btLogo;
 	// FIM
+	
+	//VENDAS
+	private Button btIncluirNovaVenda;
+	private ScrollContainer listaVendasRelatorio;
+	private List<Venda> vendasListRelatorio;
+	private VendaDAO vendaDAO;
+	//FIM
+	
+	// SORVETES
+	private SorveteDAO sorveteDAO;
+	// FIM
+	
+	
 
-	public ListarRelatorioWindow() throws ImageException, IOException {
+	public ListarRelatorioWindow() throws ImageException, IOException, SQLException {
 
 		// FUNCOES SISTEMAS
 		btVoltar = new Button("Voltar");
 		btLogo = new Button(new Image("/resources/logoWMW 80x40.png"), Button.BORDER_NONE);
 		// FIM
-
+		
+		// IMPORT DA LISTA DE VENDAS
+		vendaDAO = new VendaDAO();
+		vendasListRelatorio = vendaDAO.findAllVendas();
+		// FIM
 	}
 
-	@Override
-	public void initUI() {
-
+	public void montaTela() {
 		// INSERINDO A LOGO E O TEXTO
 		add(btLogo, LEFT + 10, TOP);
 		add(new Label("RELATORIO GERAL DE VENDAS"), AFTER + 65, SAME + 10, FILL - 10, PREFERRED);
 		// FIM
 		
+	
 		// INSERINDO BOTÕES DO SISTEMA
 		add(btVoltar, RIGHT - 10, BOTTOM - 10);
 		// FIM
+	}
+	
+	@Override
+	public void initUI() {
+		montaTela();
 	}
 
 	@Override
