@@ -14,7 +14,7 @@ import util.DatabaseManager;
 public class VendaDAO {
 
 	public static boolean insertVenda(Venda venda) throws SQLException {
-			PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("INSERT INTO SORVETES VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("INSERT INTO VENDAS VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 			ps.setInt(1, venda.codigo); //PRIMARY KEY
 			ps.setString(2, venda.sabor);
 			ps.setDouble(3, venda.valorUnidade);

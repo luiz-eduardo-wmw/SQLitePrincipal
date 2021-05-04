@@ -155,10 +155,9 @@ public class ListarSorvetesWindow extends Window {
 				try {
 					vendasWindow = new ListarVendasWindow();
 					vendasWindow.popup();
-				} catch (ImageException | IOException e) {
+				} catch (SQLException | ImageException | IOException e) {
 					e.printStackTrace();
 				}
-
 			} else if (event.target == btVoltar) {
 				this.unpop();
 			} else if (event.target == btIncluirNovaVenda) {
