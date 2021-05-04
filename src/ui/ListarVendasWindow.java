@@ -69,11 +69,7 @@ public class ListarVendasWindow extends Window {
 
 	private String[] vendaToArray(Venda venda) {
 		String[] dadosArray = new String[4];
-<<<<<<< HEAD
 		dadosArray[0] = "Pedido nº " + String.valueOf(venda.numeroDoPedido);
-=======
-		dadosArray[0] = String.valueOf(venda.codigo);
->>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 		dadosArray[1] = "R$" + String.valueOf(venda.valorVenda);
 		dadosArray[2] = venda.sabor;
 		dadosArray[3] = String.valueOf(venda.estoqueVenda);
@@ -151,11 +147,7 @@ public class ListarVendasWindow extends Window {
 				try {
 					vendasWindow = new IncluirVendasWindow(venda);
 					vendasWindow.popup();
-<<<<<<< HEAD
 				} catch (SQLException | ImageException | IOException e) {
-=======
-				} catch (ImageException | IOException e) {
->>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 					e.printStackTrace();
 				}
 				try {
