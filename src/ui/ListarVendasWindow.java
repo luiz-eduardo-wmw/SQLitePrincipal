@@ -77,6 +77,7 @@ public class ListarVendasWindow extends Window {
 		String[] dadosArray = new String[4];
 		dadosArray[0] = "Pedido nº " + String.valueOf(venda.numeroDoPedido);
 		dadosArray[1] = "R$" + String.valueOf(venda.valorVenda);
+		//AQUI NA TELA DE RELATORIO TROCAR O SABOR POR NOMEDOCLIENTE
 		dadosArray[2] = venda.sabor;
 		dadosArray[3] = String.valueOf(venda.estoqueVenda);
 		return dadosArray;

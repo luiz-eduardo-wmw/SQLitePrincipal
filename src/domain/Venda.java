@@ -5,6 +5,7 @@ public class Venda {
 
 	public int numeroDoPedido; // 
 	public int codigo; //
+	public String nomeDoCliente;
 	public String sabor; //NUMERIC, DEFINIDO PELA OUTRA TABELA NO BANCO (SORVETES)
 	public double valorUnidade; //NUMERIC, VALOR POR CADA VENDA DEFINIDO PELA OUTRA TABELA NO BANCO (SORVETES)
 	public double valorVenda; //NUMERIC, VALOR POR VENDA, SOMADO AUTOMATICAMENTE QUANDO SELECIONA A QUANTIDADE DE VENDA (ESTOQUEVENDA) 

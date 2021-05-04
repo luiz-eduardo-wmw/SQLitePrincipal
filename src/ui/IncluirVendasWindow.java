@@ -31,6 +31,7 @@ public class IncluirVendasWindow extends Window {
 	private Edit editEstoqueAtivo;
 	private Edit editEstoqueVendido;
 	private Edit editNumeroDoPedido;
+	private Edit editNomeDoCliente;
 	// FIM
 
 	// CRIANDO OS BOTÕES DO SISTEMA
@@ -51,15 +52,16 @@ public class IncluirVendasWindow extends Window {
 		// CONFIGURANDO OS EDITS DE INSERÇÃO DE DADOS
 
 		// INICIANDO OS EDITS
-		editSabor = new Edit();
 		editNumeroDoPedido = new Edit("999999999");
 		editCodigo = new Edit("999999999");
+		editNomeDoCliente = new Edit("999999999");
+		editSabor = new Edit();
 		editValorUnidade = new Edit("999999999,99");
 		editValorVenda = new Edit("999999999,99");
 		editValorTotal = new Edit("999999999,99");
 		editEstoqueVenda = new Edit("999999999,99");
 		editEstoqueAtivo = new Edit("999999999");
-		editEstoqueVendido = new Edit("999999999");
+		editEstoqueVendido = new Edit();
 
 		// SETANDO O MODO
 		editNumeroDoPedido.setMode(Edit.NORMAL, true);
@@ -70,6 +72,7 @@ public class IncluirVendasWindow extends Window {
 		editEstoqueVenda.setMode(Edit.CURRENCY, true);
 		editEstoqueAtivo.setMode(Edit.NORMAL, true);
 		editEstoqueVendido.setMode(Edit.NORMAL, true);
+		editNomeDoCliente.setMode(Edit.NORMAL, true);
 
 		// SETANDO OS CARACTERES VALIDOS
 		editNumeroDoPedido.setValidChars("1234567890");
@@ -91,6 +94,7 @@ public class IncluirVendasWindow extends Window {
 		editEstoqueVenda.alignment = RIGHT;
 		editEstoqueAtivo.alignment = RIGHT;
 		editEstoqueVendido.alignment = RIGHT;
+		editNomeDoCliente.alignment = RIGHT;
 
 		// SETANDO A EDIÇÃO
 		editNumeroDoPedido.setEditable(true);
@@ -149,6 +153,9 @@ public class IncluirVendasWindow extends Window {
 		add(new Label("Codigo"), LEFT + 10, AFTER + 10);
 		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
+		add(new Label("Nome do Cliente/Empresa"), LEFT + 10, AFTER + 10);
+		add(editNomeDoCliente, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
+		
 		// deverá importar da outra tabela com base no código digitado
 		add(new Label("Sabor"), LEFT + 10, AFTER + 10);
 		add(editSabor, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
@@ -319,6 +326,7 @@ public class IncluirVendasWindow extends Window {
 	private Venda screenToDomain() throws Exception {
 		String numeroDoPedido = editNumeroDoPedido.getText();
 		String codigo = editCodigo.getText();
+		String nomeDoCliente = editNomeDoCliente.getText();
 		String sabor = editSabor.getText();
 		String valorUnidade = editValorUnidade.getText();
 		String valorVenda = editValorVenda.getText();
@@ -326,15 +334,15 @@ public class IncluirVendasWindow extends Window {
 		String estoqueAtivo = editEstoqueAtivo.getText();
 		String estoqueVenda = editEstoqueVenda.getText();
 		String estoqueVendido = editEstoqueVendido.getText();
-		if (!validateFields(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda))
+		if (!validateFields(numeroDoPedido, codigo, nomeDoCliente, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda))
 			throw new Exception("Campos inválidos");
 
-		Venda venda = createDomain(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo,
+		Venda venda = createDomain(numeroDoPedido, codigo, nomeDoCliente, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo,
 				estoqueVenda, estoqueVendido);
 		return venda;
 	}
 
-	private Venda createDomain(String numeroDoPedido, String codigo, String sabor, String valorUnidade,
+	private Venda createDomain(String numeroDoPedido, String codigo, String nomeDoCliente, String sabor, String valorUnidade,
 			String valorVenda, String valorTotal, String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
 		double numeroDoPedidoAsInt = 0;
 		double codigoAsInt = 0;
@@ -362,6 +370,7 @@ public class IncluirVendasWindow extends Window {
 		Venda venda = new Venda();
 		venda.numeroDoPedido = (int) numeroDoPedidoAsInt;
 		venda.codigo = (int) codigoAsInt;
+		venda.nomeDoCliente = nomeDoCliente;
 		venda.sabor = sabor;
 		venda.valorUnidade = valorUnidadeAsDouble;
 		venda.valorVenda = valorVendaAsDouble;
@@ -370,7 +379,7 @@ public class IncluirVendasWindow extends Window {
 		return venda;
 	}
 
-	private boolean validateFields(String numeroDoPedido, String codigo, String sabor, String valorUnidade,
+	private boolean validateFields(String numeroDoPedido, String codigo, String nomeDoCliente, String sabor, String valorUnidade,
 			String valorVenda, String estoqueAtivo, String estoqueVenda) {
 		if (numeroDoPedido.isEmpty()) {
 			new MessageBox("Atenção", "Digite um número de Pedido!").popup();
@@ -379,6 +388,11 @@ public class IncluirVendasWindow extends Window {
 		}
 		if (codigo.isEmpty()) {
 			new MessageBox("Atenção", "Digite um codigo!").popup();
+			;
+			return false;
+		}
+		if (nomeDoCliente.isEmpty()) {
+			new MessageBox("Atenção", "Digite um Cliente/Empresa!").popup();
 			;
 			return false;
 		}
