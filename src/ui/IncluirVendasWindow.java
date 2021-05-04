@@ -30,6 +30,7 @@ public class IncluirVendasWindow extends Window {
 	private Edit editEstoqueVenda;
 	private Edit editEstoqueAtivo;
 	private Edit editEstoqueVendido;
+	private Edit editNumeroDoPedido;
 	// FIM
 
 	// CRIANDO OS BOTÕES DO SISTEMA
@@ -54,6 +55,11 @@ public class IncluirVendasWindow extends Window {
 		// sabor
 		editSabor = new Edit();
 		editSabor.setEditable(false);
+
+		//
+		editNumeroDoPedido = new Edit("999999999");
+		editNumeroDoPedido.setMode(Edit.NORMAL, true);
+		editNumeroDoPedido.setValidChars("1234567890");
 
 		// codigo
 		editCodigo = new Edit("999999999");
@@ -111,6 +117,7 @@ public class IncluirVendasWindow extends Window {
 	public IncluirVendasWindow(Venda venda) throws ImageException, IOException {
 		this();
 		this.atualizando = true;
+		editNumeroDoPedido.setText(String.valueOf(venda.numeroDoPedido));
 		editCodigo.setText(String.valueOf(venda.codigo));
 		editSabor.setText(venda.sabor);
 		editValorUnidade.setText(String.valueOf(venda.valorUnidade));
@@ -129,7 +136,10 @@ public class IncluirVendasWindow extends Window {
 		add(new Label("REGISTRANDO NOVA VENDA"), AFTER + 65, SAME + 10, FILL - 10, PREFERRED);
 		// FIM
 
-		// CRIANDO A TELA COM OS EDITS E LABEL
+		// CRIANDO A TELA COM OS EDITS E LABEL		
+		add(new Label("Numero do Pedido"), LEFT + 10, AFTER + 10);
+		add(editNumeroDoPedido, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
+		
 		add(new Label("Codigo"), LEFT + 10, AFTER + 10);
 		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
@@ -155,7 +165,7 @@ public class IncluirVendasWindow extends Window {
 		// ADICIONANDO NA TELA O BOTÃO VOLTAR
 		add(btVoltar, RIGHT - 10, BOTTOM - 10);
 		// FIM
-		
+
 		if (atualizando) {
 			add(btAtualizar, BEFORE - 10, SAME);
 			add(btExcluir, BEFORE - 10, SAME);
@@ -202,10 +212,19 @@ public class IncluirVendasWindow extends Window {
 			}
 			break;
 		case ControlEvent.PRESSED:
+
 			if (event.target == btVoltar) {
 				this.unpop();
 			} else if (event.target == btEnviar) {
 				insertVenda();
+				double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
+				double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
+				double estoquePósVenda = estoqueAtivo - estoqueVenda;
+/*AQUI*/		System.out.println(estoquePósVenda); //FUNCIONANDO ATÉ AQUI
+				/*
+				 * atualizandoEstoque(); // como vou pegar o 'estoquePósVenda' e dar o update no banco de dados?
+				*/
+				/* editValorVenda.setText("" + valorTotal); */
 				unpop();
 			} else if (event.target == btAtualizar) {
 				atualizarVenda();
@@ -227,7 +246,7 @@ public class IncluirVendasWindow extends Window {
 			if (venda == null)
 				return;
 			if (VendaDAO.atualizarVenda(venda)) {
-				new MessageBox("Info", "Venda Atualizada").popup();
+				new MessageBox("Info", "Estoque Atualizado").popup();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -276,25 +295,24 @@ public class IncluirVendasWindow extends Window {
 	}
 
 	private Venda screenToDomainEstoque() throws Exception {
+		String numeroDoPedido = editNumeroDoPedido.getText();
 		String codigo = editCodigo.getText();
 		String sabor = editSabor.getText();
 		String valorUnidade = editValorUnidade.getText();
 		String valorVenda = editValorVenda.getText();
-		String valorTotal = editValorTotal.getText();
 		String estoqueAtivo = editEstoqueAtivo.getText();
 		String estoqueVenda = editEstoqueVenda.getText();
-		String estoqueVendido = editEstoqueVendido.getText();
-		if (!validateFieldsEstoque(codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo, estoqueVenda,
-				estoqueVendido))
+		if (!validateFieldsEstoque(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda))
 			throw new Exception("Campos inválidos");
 
-		Venda venda = createDomainEstoque(codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo,
-				estoqueVenda, estoqueVendido);
+		Venda venda = createDomainEstoque(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda,
+				estoqueVenda, estoqueVenda);
 		return venda;
 	}
 
-	private Venda createDomainEstoque(String codigo, String sabor, String valorUnidade, String valorVenda,
+	private Venda createDomainEstoque(String numeroDoPedido, String codigo, String sabor, String valorUnidade, String valorVenda,
 			String valorTotal, String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+		double numeroDoPedidoAsInt = 0;
 		double codigoAsInt = 0;
 		double valorUnidadeAsDouble = 0;
 		double valorVendaAsDouble = 0;
@@ -302,7 +320,9 @@ public class IncluirVendasWindow extends Window {
 		double estoqueAtivoAsDouble = 0;
 		double estoqueVendaAsDouble = 0;
 		double estoqueVendidoAsDouble = 0;
-		try {
+		try {			
+			numeroDoPedido = numeroDoPedido.replace(",", ".");
+			numeroDoPedidoAsInt = Double.parseDouble(numeroDoPedido);
 			codigo = codigo.replace(",", ".");
 			codigoAsInt = Double.parseDouble(codigo);
 			valorUnidade = valorUnidade.replace(",", ".");
@@ -322,6 +342,8 @@ public class IncluirVendasWindow extends Window {
 			return null;
 		}
 		Venda venda = new Venda();
+		
+		venda.numeroDoPedido = (int) numeroDoPedidoAsInt;
 		venda.codigo = (int) codigoAsInt;
 		venda.sabor = sabor;
 		venda.valorUnidade = valorUnidadeAsDouble;
@@ -333,8 +355,13 @@ public class IncluirVendasWindow extends Window {
 		return venda;
 	}
 
-	private boolean validateFieldsEstoque(String codigo, String sabor, String valorUnidade, String valorVenda,
-			String valorTotal, String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+	private boolean validateFieldsEstoque(String numeroDoPedido, String codigo, String sabor, String valorUnidade, String valorVenda,
+			String estoqueAtivo, String estoqueVenda) {
+		if (numeroDoPedido.isEmpty()) {
+			new MessageBox("Atenção", "Digite um número de Pedido!").popup();
+			;
+			return false;
+		}
 		if (codigo.isEmpty()) {
 			new MessageBox("Atenção", "Digite um codigo!").popup();
 			;
@@ -359,12 +386,6 @@ public class IncluirVendasWindow extends Window {
 			return false;
 		}
 
-		if (valorTotal.isEmpty()) {
-			new MessageBox("Atenção", "Digite um valor Total!").popup();
-			;
-			return false;
-		}
-
 		if (estoqueAtivo.isEmpty()) {
 			new MessageBox("Atenção", "Digite o Estoque Ativo!").popup();
 			;
@@ -380,6 +401,7 @@ public class IncluirVendasWindow extends Window {
 	}
 
 	private Venda screenToDomain() throws Exception {
+		String numeroDoPedido = editNumeroDoPedido.getText();
 		String codigo = editCodigo.getText();
 		String sabor = editSabor.getText();
 		String valorUnidade = editValorUnidade.getText();
@@ -388,22 +410,25 @@ public class IncluirVendasWindow extends Window {
 		String estoqueAtivo = editEstoqueAtivo.getText();
 		String estoqueVenda = editEstoqueVenda.getText();
 		String estoqueVendido = editEstoqueVendido.getText();
-		if (!validateFields(codigo, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda))
+		if (!validateFields(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda))
 			throw new Exception("Campos inválidos");
 
-		Venda venda = createDomain(codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo, estoqueVenda,
+		Venda venda = createDomain(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo, estoqueVenda,
 				estoqueVendido);
 		return venda;
 	}
 
-	private Venda createDomain(String codigo, String sabor, String valorUnidade, String valorVenda, String valorTotal,
+	private Venda createDomain(String numeroDoPedido, String codigo, String sabor, String valorUnidade, String valorVenda, String valorTotal,
 			String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+		double numeroDoPedidoAsInt = 0;
 		double codigoAsInt = 0;
 		double valorUnidadeAsDouble = 0;
 		double valorVendaAsDouble = 0;
 		double estoqueAtivoAsDouble = 0;
 		double estoqueVendaAsDouble = 0;
 		try {
+			numeroDoPedido = numeroDoPedido.replace(",", ".");
+			numeroDoPedidoAsInt = Double.parseDouble(numeroDoPedido);
 			codigo = codigo.replace(",", ".");
 			codigoAsInt = Double.parseDouble(codigo);
 			valorUnidade = valorUnidade.replace(",", ".");
@@ -419,6 +444,7 @@ public class IncluirVendasWindow extends Window {
 			return null;
 		}
 		Venda venda = new Venda();
+		venda.numeroDoPedido = (int) numeroDoPedidoAsInt;
 		venda.codigo = (int) codigoAsInt;
 		venda.sabor = sabor;
 		venda.valorUnidade = valorUnidadeAsDouble;
@@ -428,8 +454,13 @@ public class IncluirVendasWindow extends Window {
 		return venda;
 	}
 
-	private boolean validateFields(String codigo, String sabor, String valorUnidade, String valorVenda,
+	private boolean validateFields(String numeroDoPedido, String codigo, String sabor, String valorUnidade, String valorVenda,
 			String estoqueAtivo, String estoqueVenda) {
+		if (numeroDoPedido.isEmpty()) {
+			new MessageBox("Atenção", "Digite um número de Pedido!").popup();
+			;
+			return false;
+		}
 		if (codigo.isEmpty()) {
 			new MessageBox("Atenção", "Digite um codigo!").popup();
 			;
