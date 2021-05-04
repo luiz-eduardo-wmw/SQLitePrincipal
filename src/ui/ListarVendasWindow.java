@@ -171,6 +171,10 @@ public class ListarVendasWindow extends Window {
 			vendasWindow.popup();
 		} catch (ImageException | IOException e) {
 			e.printStackTrace();
+		} try {
+			reloadListVendas();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }

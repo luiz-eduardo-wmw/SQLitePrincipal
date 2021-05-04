@@ -142,7 +142,6 @@ public class ListarSorvetesWindow extends Window {
 					sorvetesWindow = new IncluirSorvetesWindow();
 					sorvetesWindow.popup();
 				} catch (ImageException | IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				try {
@@ -175,7 +174,6 @@ public class ListarSorvetesWindow extends Window {
 					sorvetesWindow = new IncluirSorvetesWindow(sorvete);
 					sorvetesWindow.popup();
 				} catch (ImageException | IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				try {
