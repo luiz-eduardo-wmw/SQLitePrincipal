@@ -26,6 +26,8 @@ public class ListarVendasWindow extends Window {
 	// OS BOTÕES DE LAYOUT
 	private Button btVoltar;
 	private Button btLogo;
+	private Button btRelatorioDeVendas;
+	private Button btListaDeSorvetes;
 	// FIM
 
 	// VENDAS
@@ -39,7 +41,7 @@ public class ListarVendasWindow extends Window {
 
 		// VENDAS
 		listaVendas = new ScrollContainer();
-		btIncluirNovaVenda = new Button("Incluir Nova Venda");
+		btIncluirNovaVenda = new Button("Nova Venda");
 		vendaDAO = new VendaDAO();
 		vendasList = vendaDAO.findAllVendas();
 		// FIM
@@ -47,6 +49,8 @@ public class ListarVendasWindow extends Window {
 		// FUNCOES SISTEMAS
 		btVoltar = new Button("Voltar");
 		btLogo = new Button(new Image("/resources/logoWMW 80x40.png"), Button.BORDER_NONE);
+		btRelatorioDeVendas = new Button("Relatorio de Vendas");
+		btListaDeSorvetes = new Button("Sorvetes");
 		// FIM
 
 	}
@@ -67,6 +71,8 @@ public class ListarVendasWindow extends Window {
 		}
 	}
 
+	
+	// COMO LISTA APARECE NA TELA
 	private String[] vendaToArray(Venda venda) {
 		String[] dadosArray = new String[4];
 		dadosArray[0] = "Pedido nº " + String.valueOf(venda.numeroDoPedido);
@@ -111,7 +117,9 @@ public class ListarVendasWindow extends Window {
 		// FIM FUNCOES SISTEMAS
 
 		// VENDAS
-		add(btIncluirNovaVenda, LEFT + 10, BOTTOM - 10);		
+		add(btIncluirNovaVenda, LEFT + 10, SAME);		
+		add(btListaDeSorvetes, AFTER + 7, SAME);
+		add(btRelatorioDeVendas, AFTER + 7, SAME);
 		// FIM DE VENDAS
 	}
 
@@ -132,9 +140,22 @@ public class ListarVendasWindow extends Window {
 		switch (event.type) {
 		case ControlEvent.PRESSED:
 			if (event.target == btVoltar) {
+				try {
+					reloadListVendas();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				this.unpop();
 			} else if (event.target == btIncluirNovaVenda) {
 				btIncluirNovaVendaClick();
+			} else if (event.target == btRelatorioDeVendas) {
+				  // ABRIR TELA COM RELATIO E NESTERELATORIO SOMAR A QUANTIDADE VENDIDA, O VALOR GANHO
+			}else if (event.target == btListaDeSorvetes) {
+				try {
+					btSorvetesClick();
+				} catch (ImageException | IOException e) {
+					e.printStackTrace();
+				}
 			}
 			break;
 		case PenEvent.PEN_DOWN:
@@ -147,6 +168,7 @@ public class ListarVendasWindow extends Window {
 				try {
 					vendasWindow = new IncluirVendasWindow(venda);
 					vendasWindow.popup();
+					reloadListVendas();
 				} catch (SQLException | ImageException | IOException e) {
 					e.printStackTrace();
 				}
@@ -161,6 +183,16 @@ public class ListarVendasWindow extends Window {
 			break;
 		}
 		super.onEvent(event);
+	}
+	
+	private void btSorvetesClick() throws ImageException, IOException {
+		ListarSorvetesWindow sorvetesWindow;
+		try {
+			sorvetesWindow = new ListarSorvetesWindow();
+			sorvetesWindow.popup();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void btIncluirNovaVendaClick() {

@@ -39,18 +39,22 @@ public class IncluirSorvetesWindow extends Window {
 	public IncluirSorvetesWindow() throws ImageException, IOException {
 		this.atualizando = false;
 		editSabor = new Edit();
-
+		editSabor.alignment = RIGHT;
+		
 		editCodigo = new Edit("999999999");
 		editCodigo.setMode(Edit.NORMAL, true);
 		editCodigo.setValidChars("1234567890");
+		editCodigo.alignment = RIGHT;
 
 		editValor = new Edit("999999999,99");
 		editValor.setMode(Edit.CURRENCY, true);
 		editValor.setValidChars("0123456789");
+		editValor.alignment = RIGHT;
 
 		editEstoque = new Edit("999999999");
 		editEstoque.setMode(Edit.NORMAL, true);
 		editEstoque.setValidChars("0123456789UN");
+		editEstoque.alignment = RIGHT;
 
 
 		sorveteDAO = new SorveteDAO();
@@ -83,16 +87,16 @@ public class IncluirSorvetesWindow extends Window {
 		// FIM
 
 		add(new Label("Codigo"), LEFT + 10, AFTER + 10);
-		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
+		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
 		add(new Label("Sabor"), LEFT + 10, AFTER + 10);
-		add(editSabor, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
+		add(editSabor, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
 		add(new Label("Valor"), LEFT + 10, AFTER + 10);
-		add(editValor, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
+		add(editValor, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
 		add(new Label("Estoque"), LEFT + 10, AFTER + 10);
-		add(editEstoque, LEFT + 10, AFTER + 5, FILL - 10, PREFERRED);
+		add(editEstoque, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
 		add(btVoltar, RIGHT - 10, BOTTOM - 10);
 

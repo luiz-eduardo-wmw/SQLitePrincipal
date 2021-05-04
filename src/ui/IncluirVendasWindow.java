@@ -43,66 +43,70 @@ public class IncluirVendasWindow extends Window {
 
 	// IMPORTANDO A TABELA SORVETES
 	private SorveteDAO sorveteDAO;
-	private VendaDAO vendaDAO;
-	// FIM
-
 	private boolean atualizando;
 
 	public IncluirVendasWindow() throws ImageException, IOException {
 		this.atualizando = false;
 
 		// CONFIGURANDO OS EDITS DE INSERÇÃO DE DADOS
-		// sabor
+
+		// INICIANDO OS EDITS
 		editSabor = new Edit();
-		editSabor.setEditable(false);
-
-		//
 		editNumeroDoPedido = new Edit("999999999");
-		editNumeroDoPedido.setMode(Edit.NORMAL, true);
-		editNumeroDoPedido.setValidChars("1234567890");
-
-		// codigo
 		editCodigo = new Edit("999999999");
-		editCodigo.setMode(Edit.NORMAL, true);
-		editCodigo.setValidChars("1234567890");
-
-		// valorUnidade
 		editValorUnidade = new Edit("999999999,99");
-		editValorUnidade.setMode(Edit.CURRENCY, true);
-		editValorUnidade.setValidChars("0123456789");
-		editValorUnidade.setEditable(false);
-
-		// valorVenda
 		editValorVenda = new Edit("999999999,99");
-		editValorVenda.setMode(Edit.CURRENCY, true);
-		editValorVenda.setValidChars("0123456789");
-		editValorVenda.setEditable(false);
-
-		// valorTotal
 		editValorTotal = new Edit("999999999,99");
-		editValorTotal.setMode(Edit.CURRENCY, true);
-		editValorTotal.setValidChars("0123456789");
-
-		// estoqueVenda
 		editEstoqueVenda = new Edit("999999999,99");
-		editEstoqueVenda.setMode(Edit.CURRENCY, true);
-		editEstoqueVenda.setValidChars("0123456789");
-		editEstoqueVenda.setEditable(true);
-
-		// estoqueAtivo
 		editEstoqueAtivo = new Edit("999999999");
-		editEstoqueAtivo.setMode(Edit.NORMAL, true);
-		editEstoqueAtivo.setValidChars("0123456789");
-		editEstoqueAtivo.setEditable(false);
-
-		// estoqueVendido
 		editEstoqueVendido = new Edit("999999999");
+
+		// SETANDO O MODO
+		editNumeroDoPedido.setMode(Edit.NORMAL, true);
+		editCodigo.setMode(Edit.NORMAL, true);
+		editValorUnidade.setMode(Edit.CURRENCY, true);
+		editValorVenda.setMode(Edit.CURRENCY, true);
+		editValorTotal.setMode(Edit.CURRENCY, true);
+		editEstoqueVenda.setMode(Edit.CURRENCY, true);
+		editEstoqueAtivo.setMode(Edit.NORMAL, true);
 		editEstoqueVendido.setMode(Edit.NORMAL, true);
+
+		// SETANDO OS CARACTERES VALIDOS
+		editNumeroDoPedido.setValidChars("1234567890");
+		editCodigo.setValidChars("1234567890");
+		editValorUnidade.setValidChars("0123456789");
+		editValorVenda.setValidChars("0123456789");
+		editValorTotal.setValidChars("0123456789");
+		editEstoqueVenda.setValidChars("0123456789");
+		editEstoqueAtivo.setValidChars("0123456789");
 		editEstoqueVendido.setValidChars("0123456789");
+
+		// ALINHAMENTO DO TEXTO
+		editNumeroDoPedido.alignment = RIGHT;
+		editCodigo.alignment = RIGHT;
+		editSabor.alignment = RIGHT;
+		editValorUnidade.alignment = RIGHT;
+		editValorVenda.alignment = RIGHT;
+		editValorTotal.alignment = RIGHT;
+		editEstoqueVenda.alignment = RIGHT;
+		editEstoqueAtivo.alignment = RIGHT;
+		editEstoqueVendido.alignment = RIGHT;
+
+		// SETANDO A EDIÇÃO
+		editNumeroDoPedido.setEditable(true);
+		editCodigo.setEditable(true);
+		editSabor.setEditable(false);
+		editValorUnidade.setEditable(false);
+		editValorVenda.setEditable(false);
+		editValorTotal.setEditable(true);
+		editEstoqueVenda.setEditable(true);
+		editEstoqueAtivo.setEditable(false);
+		editEstoqueVendido.setEditable(true);
+
 		// FIM
 
 		sorveteDAO = new SorveteDAO();
-		vendaDAO = new VendaDAO();
+		new VendaDAO();
 
 		// CONFIGURANDO OS BOTÕES DO SISTEMA
 		btVoltar = new Button("Voltar");
@@ -120,7 +124,7 @@ public class IncluirVendasWindow extends Window {
 		editNumeroDoPedido.setText(String.valueOf(venda.numeroDoPedido));
 		editCodigo.setText(String.valueOf(venda.codigo));
 		Sorvete sorvete = sorveteDAO.findByPrimaryKey(venda.codigo);
-		
+
 		editSabor.setText(sorvete.sabor);
 		editValorUnidade.setText(String.valueOf(sorvete.valorUnidade));
 		editValorVenda.setText(String.valueOf(venda.valorVenda));
@@ -181,7 +185,7 @@ public class IncluirVendasWindow extends Window {
 	public void popup() {
 		setRect(0, 0, Settings.screenWidth, Settings.screenHeight);
 		super.popup();
-		
+
 	}
 
 	private void reloadlistatualizar(int codigo) {
@@ -202,21 +206,29 @@ public class IncluirVendasWindow extends Window {
 		switch (event.type) {
 		case ControlEvent.FOCUS_OUT:
 			Sorvete sorvete = null;
-
 			if (event.target == editCodigo && !editCodigo.getText().isEmpty()) {
 				int codigo = Integer.parseInt(editCodigo.getText());
+				try {
+					sorvete = sorveteDAO.findByPrimaryKey(codigo);
+					if (sorvete != null) {
+						reloadlistatualizar(codigo);
+					} else {
+						new MessageBox("Info", "Código Indisponível").popup();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				reloadlistatualizar(codigo);
 				break;
 			}
-			if (event.target == editEstoqueVenda /*&& editEstoqueVenda <= editEstoqueAtivo*/) {
-				
+			if (event.target == editEstoqueVenda) {
 				double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
 				double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
 				double valorUnidade = Double.parseDouble(editValorUnidade.getText().replace(",", "."));
 				if (estoqueVenda <= estoqueAtivo) {
 					double valorTotal = estoqueVenda * valorUnidade;
 					System.out.println(valorTotal);
-					editValorVenda.setText("" + valorTotal);					
+					editValorVenda.setText("" + valorTotal);
 				} else {
 					new MessageBox("Info", "Estoque Indisponível").popup();
 				}
@@ -232,13 +244,10 @@ public class IncluirVendasWindow extends Window {
 				double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
 				int codigo = Integer.parseInt(editCodigo.getText().replace(",", "."));
 				double estoquePosVenda = estoqueAtivo - estoqueVenda;
-/*AQUI*/		System.out.println(estoquePosVenda); //FUNCIONANDO ATÉ AQUI
 				atualizandoEstoque(codigo, estoquePosVenda);
-				
 				unpop();
 			} else if (event.target == btAtualizar) {
 				atualizarVenda();
-				
 				unpop();
 			} else if (event.target == btExcluir) {
 				excluirVenda();
@@ -246,9 +255,7 @@ public class IncluirVendasWindow extends Window {
 				double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
 				int codigo = Integer.parseInt(editCodigo.getText().replace(",", "."));
 				double estoquePosVenda = estoqueAtivo + estoqueVenda;
-/*AQUI*/		System.out.println(estoquePosVenda); //FUNCIONANDO ATÉ AQUI
 				atualizandoEstoque(codigo, estoquePosVenda);
-				
 				unpop();
 			}
 		default:
@@ -407,5 +414,4 @@ public class IncluirVendasWindow extends Window {
 		}
 		return true;
 	}
-
 }

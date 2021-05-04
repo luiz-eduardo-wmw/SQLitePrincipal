@@ -49,14 +49,12 @@ public class MainMenu extends MainWindow {
 				try {
 					btSorvetesClick();
 				} catch (ImageException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else if (event.target == btVenda) {
 				try {
 					btVendaClick();
 				} catch (SQLException | ImageException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
