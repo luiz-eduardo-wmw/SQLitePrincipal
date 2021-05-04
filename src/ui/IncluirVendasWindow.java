@@ -208,15 +208,18 @@ public class IncluirVendasWindow extends Window {
 				reloadlistatualizar(codigo);
 				break;
 			}
-			if (event.target == editEstoqueVenda) {
-				// editEstoqueVenda.getText();
-
+			if (event.target == editEstoqueVenda /*&& editEstoqueVenda <= editEstoqueAtivo*/) {
+				
+				double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
 				double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
 				double valorUnidade = Double.parseDouble(editValorUnidade.getText().replace(",", "."));
-				double valorTotal = estoqueVenda * valorUnidade;
-				System.out.println(valorTotal);
-				editValorVenda.setText("" + valorTotal);
-				// editValorVenda.setText("" + editEstoqueVenda.get());
+				if (estoqueVenda <= estoqueAtivo) {
+					double valorTotal = estoqueVenda * valorUnidade;
+					System.out.println(valorTotal);
+					editValorVenda.setText("" + valorTotal);					
+				} else {
+					new MessageBox("Info", "Estoque Indisponível").popup();
+				}
 			}
 			break;
 		case ControlEvent.PRESSED:
