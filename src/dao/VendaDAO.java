@@ -48,6 +48,8 @@ public class VendaDAO {
 		return updated > 0;
 		
 	}
+	
+	
 
 	public static boolean excluirVenda(Venda venda) throws SQLException {
 		PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("DELETE FROM VENDAS WHERE NUMERODOPEDIDO = ?");

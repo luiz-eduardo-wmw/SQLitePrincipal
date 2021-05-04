@@ -12,7 +12,11 @@ public class Venda {
 	public double estoqueAtivo;//NUMERIC, VALOR DE ESTOQUE DISPONIVEL PARA CONSEGUIR VENDER
 	public double estoqueVenda; //NUMERIC, ESTOQUE POR VENDA, SOMADO AUTOMATICAMENTE QUANDO SELECIONA A QUANTIDADE DE VENDA (ESTOQUEVENDA) 
 	public double estoqueVendido; //NUMERIC, VALOR DE ESTOQUE TOTAL DE VENDAS
+<<<<<<< HEAD
 	public double estoquePosVenda;
+=======
+	public double estoquePósVenda;
+>>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 	
 	
 }

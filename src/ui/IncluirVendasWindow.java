@@ -119,6 +119,7 @@ public class IncluirVendasWindow extends Window {
 		this.atualizando = true;
 		editNumeroDoPedido.setText(String.valueOf(venda.numeroDoPedido));
 		editCodigo.setText(String.valueOf(venda.codigo));
+<<<<<<< HEAD
 		Sorvete sorvete = sorveteDAO.findByPrimaryKey(venda.codigo);
 		
 		editSabor.setText(sorvete.sabor);
@@ -126,6 +127,13 @@ public class IncluirVendasWindow extends Window {
 		editValorVenda.setText(String.valueOf(venda.valorVenda));
 		editValorTotal.setText(String.valueOf(venda.valorTotal));
 		editEstoqueAtivo.setText(String.valueOf(sorvete.estoqueAtivo));
+=======
+		editSabor.setText(venda.sabor);
+		editValorUnidade.setText(String.valueOf(venda.valorUnidade));
+		editValorVenda.setText(String.valueOf(venda.valorVenda));
+		editValorTotal.setText(String.valueOf(venda.valorTotal));
+		editEstoqueAtivo.setText(String.valueOf(venda.estoqueAtivo));
+>>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 		editEstoqueVenda.setText(String.valueOf(venda.estoqueVenda));
 		editEstoqueVendido.setText(String.valueOf(venda.estoqueVendido));
 	}
@@ -138,10 +146,17 @@ public class IncluirVendasWindow extends Window {
 		add(new Label("REGISTRANDO NOVA VENDA"), AFTER + 65, SAME + 10, FILL - 10, PREFERRED);
 		// FIM
 
+<<<<<<< HEAD
 		// CRIANDO A TELA COM OS EDITS E LABEL
 		add(new Label("Numero do Pedido"), LEFT + 10, AFTER + 10);
 		add(editNumeroDoPedido, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
+=======
+		// CRIANDO A TELA COM OS EDITS E LABEL		
+		add(new Label("Numero do Pedido"), LEFT + 10, AFTER + 10);
+		add(editNumeroDoPedido, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
+		
+>>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 		add(new Label("Codigo"), LEFT + 10, AFTER + 10);
 		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
@@ -205,6 +220,7 @@ public class IncluirVendasWindow extends Window {
 
 			if (event.target == editCodigo && !editCodigo.getText().isEmpty()) {
 				int codigo = Integer.parseInt(editCodigo.getText());
+<<<<<<< HEAD
 				reloadlistatualizar(codigo);
 				break;
 			}
@@ -278,6 +294,85 @@ public class IncluirVendasWindow extends Window {
 		}
 	}
 
+=======
+				try {
+					sorvete = sorveteDAO.findByPrimaryKey(codigo);
+					System.out.println(sorvete);
+					editSabor.setText(sorvete.sabor);
+					editEstoqueAtivo.setText("" + sorvete.estoqueAtivo);
+					editValorUnidade.setText("" + sorvete.valorUnidade);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			}
+			if (event.target == editEstoqueVenda) {
+				// editEstoqueVenda.getText();
+
+				double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
+				double valorUnidade = Double.parseDouble(editValorUnidade.getText().replace(",", "."));
+				double valorTotal = estoqueVenda * valorUnidade;
+				System.out.println(valorTotal);
+				editValorVenda.setText("" + valorTotal);
+				// editValorVenda.setText("" + editEstoqueVenda.get());
+			}
+			break;
+		case ControlEvent.PRESSED:
+
+			if (event.target == btVoltar) {
+				this.unpop();
+			} else if (event.target == btEnviar) {
+				insertVenda();
+				double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
+				double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
+				double estoquePósVenda = estoqueAtivo - estoqueVenda;
+/*AQUI*/		System.out.println(estoquePósVenda); //FUNCIONANDO ATÉ AQUI
+				/*
+				 * atualizandoEstoque(); // como vou pegar o 'estoquePósVenda' e dar o update no banco de dados?
+				*/
+				/* editValorVenda.setText("" + valorTotal); */
+				unpop();
+			} else if (event.target == btAtualizar) {
+				atualizarVenda();
+				unpop();
+			} else if (event.target == btExcluir) {
+				excluirVenda();
+				unpop();
+			}
+		default:
+			break;
+		}
+
+		super.onEvent(event);
+	}
+
+	public void atualizandoEstoque() {
+		try {
+			Venda venda = screenToDomainEstoque();
+			if (venda == null)
+				return;
+			if (VendaDAO.atualizarVenda(venda)) {
+				new MessageBox("Info", "Estoque Atualizado").popup();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void insertVenda() {
+		try {
+			Venda venda = screenToDomain();
+			if (venda == null)
+				return;
+			if (VendaDAO.insertVenda(venda)) {
+				new MessageBox("Info", "Venda Inserida").popup();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+>>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 	public void atualizarVenda() {
 		try {
 			Venda venda = screenToDomain();
@@ -306,6 +401,115 @@ public class IncluirVendasWindow extends Window {
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	private Venda screenToDomainEstoque() throws Exception {
+		String numeroDoPedido = editNumeroDoPedido.getText();
+		String codigo = editCodigo.getText();
+		String sabor = editSabor.getText();
+		String valorUnidade = editValorUnidade.getText();
+		String valorVenda = editValorVenda.getText();
+		String estoqueAtivo = editEstoqueAtivo.getText();
+		String estoqueVenda = editEstoqueVenda.getText();
+		if (!validateFieldsEstoque(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda))
+			throw new Exception("Campos inválidos");
+
+		Venda venda = createDomainEstoque(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda,
+				estoqueVenda, estoqueVenda);
+		return venda;
+	}
+
+	private Venda createDomainEstoque(String numeroDoPedido, String codigo, String sabor, String valorUnidade, String valorVenda,
+			String valorTotal, String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+		double numeroDoPedidoAsInt = 0;
+		double codigoAsInt = 0;
+		double valorUnidadeAsDouble = 0;
+		double valorVendaAsDouble = 0;
+		double valorTotalAsDouble = 0;
+		double estoqueAtivoAsDouble = 0;
+		double estoqueVendaAsDouble = 0;
+		double estoqueVendidoAsDouble = 0;
+		try {			
+			numeroDoPedido = numeroDoPedido.replace(",", ".");
+			numeroDoPedidoAsInt = Double.parseDouble(numeroDoPedido);
+			codigo = codigo.replace(",", ".");
+			codigoAsInt = Double.parseDouble(codigo);
+			valorUnidade = valorUnidade.replace(",", ".");
+			valorUnidadeAsDouble = Double.parseDouble(valorUnidade);
+			valorVenda = valorVenda.replace(",", ".");
+			valorVendaAsDouble = Double.parseDouble(valorVenda);
+			valorTotal = valorTotal.replace(",", ".");
+			valorTotalAsDouble = Double.parseDouble(valorTotal);
+			estoqueAtivo = estoqueAtivo.replace(",", ".");
+			estoqueAtivoAsDouble = Double.parseDouble(estoqueAtivo);
+			estoqueVenda = estoqueVenda.replace(",", ".");
+			estoqueVendaAsDouble = Double.parseDouble(estoqueVenda);
+			estoqueVendido = estoqueVendido.replace(",", ".");
+			estoqueVendidoAsDouble = Double.parseDouble(estoqueVendido);
+		} catch (Exception e) {
+			Vm.debug(e.getMessage());
+			return null;
+		}
+		Venda venda = new Venda();
+		
+		venda.numeroDoPedido = (int) numeroDoPedidoAsInt;
+		venda.codigo = (int) codigoAsInt;
+		venda.sabor = sabor;
+		venda.valorUnidade = valorUnidadeAsDouble;
+		venda.valorVenda = valorVendaAsDouble;
+		venda.valorTotal = valorTotalAsDouble;
+		venda.estoqueAtivo = estoqueAtivoAsDouble;
+		venda.estoqueVenda = estoqueVendaAsDouble;
+		venda.estoqueVendido = estoqueVendidoAsDouble;
+		return venda;
+	}
+
+	private boolean validateFieldsEstoque(String numeroDoPedido, String codigo, String sabor, String valorUnidade, String valorVenda,
+			String estoqueAtivo, String estoqueVenda) {
+		if (numeroDoPedido.isEmpty()) {
+			new MessageBox("Atenção", "Digite um número de Pedido!").popup();
+			;
+			return false;
+		}
+		if (codigo.isEmpty()) {
+			new MessageBox("Atenção", "Digite um codigo!").popup();
+			;
+			return false;
+		}
+
+		if (sabor.isEmpty()) {
+			new MessageBox("Atenção", "Digite um sabor!").popup();
+			;
+			return false;
+		}
+
+		if (valorUnidade.isEmpty()) {
+			new MessageBox("Atenção", "Digite o valor do Sorvete!").popup();
+			;
+			return false;
+		}
+
+		if (valorVenda.isEmpty()) {
+			new MessageBox("Atenção", "Digite o valor da Venda!").popup();
+			;
+			return false;
+		}
+
+		if (estoqueAtivo.isEmpty()) {
+			new MessageBox("Atenção", "Digite o Estoque Ativo!").popup();
+			;
+			return false;
+		}
+
+		if (estoqueVenda.isEmpty()) {
+			new MessageBox("Atenção", "Digite a quantidade de produto(s) a se(rem) vendido(s)!").popup();
+			;
+			return false;
+		}
+		return true;
+	}
+
+>>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 	private Venda screenToDomain() throws Exception {
 		String numeroDoPedido = editNumeroDoPedido.getText();
 		String codigo = editCodigo.getText();
@@ -319,6 +523,7 @@ public class IncluirVendasWindow extends Window {
 		if (!validateFields(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda))
 			throw new Exception("Campos inválidos");
 
+<<<<<<< HEAD
 		Venda venda = createDomain(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo,
 				estoqueVenda, estoqueVendido);
 		return venda;
@@ -326,6 +531,15 @@ public class IncluirVendasWindow extends Window {
 
 	private Venda createDomain(String numeroDoPedido, String codigo, String sabor, String valorUnidade,
 			String valorVenda, String valorTotal, String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+=======
+		Venda venda = createDomain(numeroDoPedido, codigo, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo, estoqueVenda,
+				estoqueVendido);
+		return venda;
+	}
+
+	private Venda createDomain(String numeroDoPedido, String codigo, String sabor, String valorUnidade, String valorVenda, String valorTotal,
+			String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+>>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 		double numeroDoPedidoAsInt = 0;
 		double codigoAsInt = 0;
 		double valorUnidadeAsDouble = 0;
@@ -360,8 +574,13 @@ public class IncluirVendasWindow extends Window {
 		return venda;
 	}
 
+<<<<<<< HEAD
 	private boolean validateFields(String numeroDoPedido, String codigo, String sabor, String valorUnidade,
 			String valorVenda, String estoqueAtivo, String estoqueVenda) {
+=======
+	private boolean validateFields(String numeroDoPedido, String codigo, String sabor, String valorUnidade, String valorVenda,
+			String estoqueAtivo, String estoqueVenda) {
+>>>>>>> 36b58261fffc9eb09e1694b8f434db882a9ea01f
 		if (numeroDoPedido.isEmpty()) {
 			new MessageBox("Atenção", "Digite um número de Pedido!").popup();
 			;
