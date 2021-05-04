@@ -21,20 +21,16 @@ public class DatabaseManager {
 		}
 	}
 	
-//	criando um método estático que irá nos retornar uma conexão a partir do sqliteUtil
 	public static Connection getConnection() throws SQLException {
-//		O método con() irá retornar apenas uma conexão por instância do SQLiteUtil, então, se a conexão já existir, a mesma será retornada, se ela não existir uma nova será criada, e será usada nas próximas interações.		
 		return sqliteUtil.con();
 	}
 	
-// 	Criando as tabelas do banco de dados
 	public static void loadTabelas() throws SQLException {
 		Statement st = getConnection().createStatement();
-		st.execute("CREATE TABLE IF NOT EXISTS SORVETES (CODIGO NUMERIC NOT NULL UNIQUE, SABOR VARCHAR UNIQUE, VALORUNIDADE NUMERIC, ESTOQUEATIVO NUMERIC, PRIMARY KEY(CODIGO))");
-		st.execute("CREATE TABLE IF NOT EXISTS VENDAS (CODIGO NUMERIC NOT NULL UNIQUE, SABOR VARCHAR UNIQUE, VALORUNIDADE NUMERIC, VALORVENDA NUMERIC, VALORTOTAL NUMERIC, ESTOQUEVENDA NUMERIC, ESTOQUEATIVO NUMERIC, ESTOQUEVENDIDO NUMERIC, PRIMARY KEY(CODIGO))");
+		st.execute("CREATE TABLE IF NOT EXISTS SORVETES (CODIGO NUMERIC NOT NULL UNIQUE, SABOR VARCHAR UNIQUE, VALORUNIDADE NUMERIC, ESTOQUEATIVO NUMERIC)");
+		st.execute("CREATE TABLE IF NOT EXISTS VENDAS (NUMERODOPEDIDO NUMERIC NOT NULL UNIQUE, CODIGO NUMERIC NOT NULL, SABOR VARCHAR, VALORUNIDADE NUMERIC, VALORVENDA NUMERIC, VALORTOTAL NUMERIC, ESTOQUEVENDA NUMERIC, ESTOQUEATIVO NUMERIC, ESTOQUEVENDIDO NUMERIC, PRIMARY KEY (NUMERODOPEDIDO))");
 		//st.execute("DROP TABLE SORVETES");
 		//st.execute("DROP TABLE VENDAS");
-//      Lembre-se, que sempre ao término da utilização de um Statement ele deve ser fechado, através do método close(), para que sejam liberados os recursos por ele alocados.		
 		st.close();
 	}
 

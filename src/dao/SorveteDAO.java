@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.Sorvete;
+import domain.Venda;
 import totalcross.sql.PreparedStatement;
 import totalcross.sql.ResultSet;
 import totalcross.sql.Statement;
@@ -41,6 +42,17 @@ public class SorveteDAO {
 		
 		return updated > 0;
 		
+	}
+	
+	public boolean atualizarEstoqueSorvete(int codigo, double estoquePosVenda) throws SQLException{
+		PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("UPDATE SORVETES SET ESTOQUEATIVO = ? WHERE CODIGO = ?");
+		ps.setDouble(1, estoquePosVenda);
+		ps.setInt(2, codigo);
+		
+		int updated = ps.executeUpdate();
+		ps.close();
+		
+		return updated > 0;
 	}
 
 	public Sorvete findByPrimaryKey(int codigo) throws SQLException {
@@ -95,6 +107,21 @@ public class SorveteDAO {
 			throw e;
 		}
 		
+	}
+
+	public static boolean atualizarSorveteEstoque() throws SQLException {
+		PreparedStatement ps = DatabaseManager.getConnection().prepareStatement("UPDATE SORVETES SET SABOR = ?, VALORUNIDADE = ?, ESTOQUEATIVO = ? WHERE CODIGO = ?");
+		Sorvete sorvete = new Sorvete();
+		Venda venda = new Venda();
+		ps.setString(1, sorvete.sabor);
+		ps.setDouble(2, sorvete.valorUnidade);
+		ps.setDouble(3, venda.estoquePosVenda);
+		ps.setInt(4, sorvete.codigo);
+		     
+		int updated = ps.executeUpdate();
+		ps.close();
+		
+		return updated > 0;
 	}
 
 }

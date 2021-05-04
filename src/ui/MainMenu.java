@@ -55,7 +55,7 @@ public class MainMenu extends MainWindow {
 			} else if (event.target == btVenda) {
 				try {
 					btVendaClick();
-				} catch (ImageException | IOException e) {
+				} catch (SQLException | ImageException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -70,7 +70,7 @@ public class MainMenu extends MainWindow {
 		super.onEvent(event);
 	}
 
-	private void btVendaClick() throws ImageException, IOException {
+	private void btVendaClick() throws ImageException, IOException, SQLException {
 		ListarVendasWindow vendasWindow;
 		vendasWindow = new ListarVendasWindow();
 		vendasWindow.popup();

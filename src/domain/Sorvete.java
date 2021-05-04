@@ -6,11 +6,8 @@ public class Sorvete {
 	public String sabor;
 	public double valorUnidade;
 	public int estoqueAtivo;
+	public int estoquePosVenda;
 	
-	@Override
-	public String toString() {
-		return "[" + sabor + "]";
-	}
 	
 	
 	
