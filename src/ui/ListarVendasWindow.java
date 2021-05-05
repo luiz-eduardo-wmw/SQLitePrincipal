@@ -165,6 +165,11 @@ public class ListarVendasWindow extends Window {
 				Venda venda = vendasList.get(c.appId);
 				if (venda == null)
 					return;
+				try {
+					reloadListVendas();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 				IncluirVendasWindow vendasWindow;
 				try {
 					vendasWindow = new IncluirVendasWindow(venda);

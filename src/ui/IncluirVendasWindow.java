@@ -88,18 +88,19 @@ public class IncluirVendasWindow extends Window {
 		editNumeroDoPedido.alignment = RIGHT;
 		editCodigo.alignment = RIGHT;
 		editSabor.alignment = RIGHT;
+		editNomeDoCliente.alignment = RIGHT;
 		editValorUnidade.alignment = RIGHT;
 		editValorVenda.alignment = RIGHT;
 		editValorTotal.alignment = RIGHT;
 		editEstoqueVenda.alignment = RIGHT;
 		editEstoqueAtivo.alignment = RIGHT;
 		editEstoqueVendido.alignment = RIGHT;
-		editNomeDoCliente.alignment = RIGHT;
 
 		// SETANDO A EDIÇÃO
 		editNumeroDoPedido.setEditable(true);
 		editCodigo.setEditable(true);
 		editSabor.setEditable(false);
+		editNomeDoCliente.setEditable(true);
 		editValorUnidade.setEditable(false);
 		editValorVenda.setEditable(false);
 		editValorTotal.setEditable(true);
@@ -127,15 +128,13 @@ public class IncluirVendasWindow extends Window {
 		this.atualizando = true;
 		editNumeroDoPedido.setText(String.valueOf(venda.numeroDoPedido));
 		editCodigo.setText(String.valueOf(venda.codigo));
-		editNomeDoCliente.setText(venda.nomeDoCliente);
 		Sorvete sorvete = sorveteDAO.findByPrimaryKey(venda.codigo);
 		editSabor.setText(sorvete.sabor);
+		editNomeDoCliente.setText(venda.nomeDoCliente);
 		editValorUnidade.setText(String.valueOf(sorvete.valorUnidade));
 		editValorVenda.setText(String.valueOf(venda.valorVenda));
-		editValorTotal.setText(String.valueOf(venda.valorTotal));
 		editEstoqueAtivo.setText(String.valueOf(sorvete.estoqueAtivo));
 		editEstoqueVenda.setText(String.valueOf(venda.estoqueVenda));
-		editEstoqueVendido.setText(String.valueOf(venda.estoqueVendido));
 	}
 
 	@Override
@@ -246,22 +245,15 @@ public class IncluirVendasWindow extends Window {
 				this.unpop();
 			} else if (event.target == btEnviar) {
 				insertVenda();
-				double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
-				double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
-				int codigo = Integer.parseInt(editCodigo.getText().replace(",", "."));
-				double estoquePosVenda = estoqueAtivo - estoqueVenda;
-				atualizandoEstoque(codigo, estoquePosVenda);
+				atualizandoEstoqueSorvete();
 				unpop();
 			} else if (event.target == btAtualizar) {
 				atualizarVenda();
+				atualizandoEstoqueSorvete();
 				unpop();
 			} else if (event.target == btExcluir) {
 				excluirVenda();
-				double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
-				double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
-				int codigo = Integer.parseInt(editCodigo.getText().replace(",", "."));
-				double estoquePosVenda = estoqueAtivo + estoqueVenda;
-				atualizandoEstoque(codigo, estoquePosVenda);
+				atualizandoEstoqueSorvete();
 				unpop();
 			}
 		default:
@@ -269,6 +261,14 @@ public class IncluirVendasWindow extends Window {
 		}
 
 		super.onEvent(event);
+	}
+
+	private void atualizandoEstoqueSorvete() {
+		double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
+		double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
+		int codigo = Integer.parseInt(editCodigo.getText().replace(",", "."));
+		double estoquePosVenda = estoqueAtivo + estoqueVenda;
+		atualizandoEstoque(codigo, estoquePosVenda);
 	}
 
 
