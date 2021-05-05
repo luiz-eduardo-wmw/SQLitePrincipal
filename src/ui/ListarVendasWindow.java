@@ -26,7 +26,6 @@ public class ListarVendasWindow extends Window {
 	// OS BOTÕES DE LAYOUT
 	private Button btVoltar;
 	private Button btLogo;
-	private Button btRelatorioDeVendas;
 	private Button btListaDeSorvetes;
 	// FIM
 
@@ -49,7 +48,6 @@ public class ListarVendasWindow extends Window {
 		// FUNCOES SISTEMAS
 		btVoltar = new Button("Voltar");
 		btLogo = new Button(new Image("/resources/logoWMW 80x40.png"), Button.BORDER_NONE);
-		btRelatorioDeVendas = new Button("Relatorio de Vendas");
 		btListaDeSorvetes = new Button("Sorvetes");
 		// FIM
 
@@ -77,8 +75,7 @@ public class ListarVendasWindow extends Window {
 		String[] dadosArray = new String[4];
 		dadosArray[0] = "Pedido nº " + String.valueOf(venda.numeroDoPedido);
 		dadosArray[1] = "R$" + String.valueOf(venda.valorVenda);
-		//AQUI NA TELA DE RELATORIO TROCAR O SABOR POR NOMEDOCLIENTE
-		dadosArray[2] = venda.sabor;
+		dadosArray[2] = venda.nomeDoCliente;
 		dadosArray[3] = String.valueOf(venda.estoqueVenda);
 		return dadosArray;
 	}
@@ -119,7 +116,6 @@ public class ListarVendasWindow extends Window {
 
 		// VENDAS
 		add(btListaDeSorvetes, LEFT + 10, SAME);
-		add(btRelatorioDeVendas, AFTER + 10, SAME);
 		add(btIncluirNovaVenda, AFTER + 10, SAME);		
 		// FIM DE VENDAS
 	}
@@ -149,29 +145,16 @@ public class ListarVendasWindow extends Window {
 				this.unpop();
 			} else if (event.target == btIncluirNovaVenda) {
 				btIncluirNovaVendaClick();
-			} else if (event.target == btRelatorioDeVendas) {
-				// ABRIR TELA COM RELATIO E NESTERELATORIO SOMAR A QUANTIDADE VENDIDA, O VALOR GANHO
-				try {
-					btRelatorioDeVenda();
-					reloadListVendas();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 				try {
 					reloadListVendas();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-			}else if (event.target == btListaDeSorvetes) {
+			} else if (event.target == btListaDeSorvetes) {
 				try {
 					btSorvetesClick();
 					reloadListVendas();
 				} catch (SQLException | ImageException | IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					reloadListVendas();
-				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
@@ -190,27 +173,12 @@ public class ListarVendasWindow extends Window {
 				} catch (SQLException | ImageException | IOException e) {
 					e.printStackTrace();
 				}
-				try {
-					reloadListVendas();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
 			break;
 		default:
 			break;
 		}
 		super.onEvent(event);
-	}
-
-	private void btRelatorioDeVenda() throws SQLException {
-		ListarRelatorioWindow relatorioWindow;
-		try {
-			relatorioWindow = new ListarRelatorioWindow();
-			relatorioWindow.popup();
-		} catch (ImageException | IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	private void btSorvetesClick() throws ImageException, IOException {

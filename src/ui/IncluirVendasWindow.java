@@ -127,8 +127,8 @@ public class IncluirVendasWindow extends Window {
 		this.atualizando = true;
 		editNumeroDoPedido.setText(String.valueOf(venda.numeroDoPedido));
 		editCodigo.setText(String.valueOf(venda.codigo));
+		editNomeDoCliente.setText(venda.nomeDoCliente);
 		Sorvete sorvete = sorveteDAO.findByPrimaryKey(venda.codigo);
-
 		editSabor.setText(sorvete.sabor);
 		editValorUnidade.setText(String.valueOf(sorvete.valorUnidade));
 		editValorVenda.setText(String.valueOf(venda.valorVenda));
@@ -199,7 +199,6 @@ public class IncluirVendasWindow extends Window {
 		Sorvete sorvete = null;
 		try {
 			sorvete = sorveteDAO.findByPrimaryKey(codigo);
-			System.out.println(sorvete.sabor);
 			editSabor.setText(sorvete.sabor);
 			editEstoqueAtivo.setText("" + sorvete.estoqueAtivo);
 			editValorUnidade.setText("" + sorvete.valorUnidade);
