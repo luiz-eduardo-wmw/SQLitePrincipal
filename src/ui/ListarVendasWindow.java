@@ -35,6 +35,12 @@ public class ListarVendasWindow extends Window {
 	private List<Venda> vendasList;
 	private VendaDAO vendaDAO;
 	// FIM
+	
+	// SORVETES
+	private ScrollContainer listaSorvetes;
+	private List<Sorvete> sorvetesList;
+	private SorveteDAO sorveteDAO;
+	// FIM
 
 	public ListarVendasWindow() throws ImageException, IOException, SQLException {
 
@@ -48,7 +54,7 @@ public class ListarVendasWindow extends Window {
 		// FUNCOES SISTEMAS
 		btVoltar = new Button("Voltar");
 		btLogo = new Button(new Image("/resources/logoWMW 80x40.png"), Button.BORDER_NONE);
-		btListaDeSorvetes = new Button("Sorvetes");
+		btListaDeSorvetes = new Button("Lista de Sorvetes");
 		// FIM
 
 	}
@@ -203,12 +209,10 @@ public class ListarVendasWindow extends Window {
 		try {
 			vendasWindow = new IncluirVendasWindow();
 			vendasWindow.popup();
-		} catch (ImageException | IOException e) {
-			e.printStackTrace();
-		} try {
 			reloadListVendas();
-		} catch (SQLException e) {
+		} catch (SQLException | ImageException | IOException e) {
 			e.printStackTrace();
-		}
+		
+	}
 	}
 }

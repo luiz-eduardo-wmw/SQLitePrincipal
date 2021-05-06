@@ -39,7 +39,6 @@ public class IncluirVendasWindow extends Window {
 	// CRIANDO OS BOTÕES DO SISTEMA
 	private Button btVoltar;
 	private Button btEnviar;
-	private Button btAtualizar;
 	private Button btExcluir;
 	private Button btLogo;
 	// FIM
@@ -48,8 +47,7 @@ public class IncluirVendasWindow extends Window {
 	private SorveteDAO sorveteDAO;
 	private boolean atualizando;
 	// FIM
-	
-		
+
 	public IncluirVendasWindow() throws ImageException, IOException {
 		this.atualizando = false;
 
@@ -120,7 +118,6 @@ public class IncluirVendasWindow extends Window {
 		// CONFIGURANDO OS BOTÕES DO SISTEMA
 		btVoltar = new Button("Voltar");
 		btEnviar = new Button("Enviar");
-		btAtualizar = new Button("Atualizar");
 		btExcluir = new Button("Excluir");
 		btLogo = new Button(new Image("/resources/logoWMW 80x40.png"), Button.BORDER_NONE);
 		// FIM
@@ -158,10 +155,10 @@ public class IncluirVendasWindow extends Window {
 
 		add(new Label("Nome do Cliente/Empresa"), LEFT + 10, AFTER + 10);
 		add(editNomeDoCliente, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
-		
+
 		add(new Label("Codigo do Produto"), LEFT + 10, AFTER + 10);
 		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
-		
+
 		// deverá importar da outra tabela com base no código digitado
 		add(new Label("Sabor"), LEFT + 10, AFTER + 10);
 		add(editSabor, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
@@ -186,7 +183,6 @@ public class IncluirVendasWindow extends Window {
 		// FIM
 
 		if (atualizando) {
-			add(btAtualizar, BEFORE - 10, SAME);
 			add(btExcluir, BEFORE - 10, SAME);
 		} else {
 			add(btEnviar, BEFORE - 10, SAME);
@@ -253,13 +249,9 @@ public class IncluirVendasWindow extends Window {
 				insertVenda();
 				atualizandoEstoqueSorvete();
 				unpop();
-			} else if (event.target == btAtualizar) {
-				atualizarVenda();
-				atualizandoEstoqueSorvete();
-				unpop();
 			} else if (event.target == btExcluir) {
 				excluirVenda();
-				atualizandoEstoqueSorvete();
+				atualizandoEstoqueSorveteExcluir();
 				unpop();
 			}
 		default:
@@ -269,16 +261,22 @@ public class IncluirVendasWindow extends Window {
 		super.onEvent(event);
 	}
 
-	
 	private void atualizandoEstoqueSorvete() {
+		double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
+		double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
+		int codigo = Integer.parseInt(editCodigo.getText().replace(",", "."));
+		double estoquePosVenda = estoqueAtivo - estoqueVenda;
+		atualizandoEstoque(codigo, estoquePosVenda);
+	}
+
+	private void atualizandoEstoqueSorveteExcluir() {
 		double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
 		double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
 		int codigo = Integer.parseInt(editCodigo.getText().replace(",", "."));
 		double estoquePosVenda = estoqueAtivo + estoqueVenda;
 		atualizandoEstoque(codigo, estoquePosVenda);
 	}
-
-
+	
 	public void atualizandoEstoque(int codigo, double estoquePosVenda) {
 		try {
 			if (sorveteDAO.atualizarEstoqueSorvete(codigo, estoquePosVenda)) {
@@ -296,19 +294,6 @@ public class IncluirVendasWindow extends Window {
 				return;
 			if (VendaDAO.insertVenda(venda)) {
 				new MessageBox("Info", "Venda Inserida").popup();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void atualizarVenda() {
-		try {
-			Venda venda = screenToDomain();
-			if (venda == null)
-				return;
-			if (VendaDAO.atualizarVenda(venda)) {
-				new MessageBox("Info", "Venda Atualizada").popup();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -341,16 +326,18 @@ public class IncluirVendasWindow extends Window {
 		String estoqueAtivo = editEstoqueAtivo.getText();
 		String estoqueVenda = editEstoqueVenda.getText();
 		String estoqueVendido = editEstoqueVendido.getText();
-		if (!validateFields(numeroDoPedido, codigo, nomeDoCliente, sabor, valorUnidade, valorVenda, estoqueAtivo, estoqueVenda))
+		if (!validateFields(numeroDoPedido, codigo, nomeDoCliente, sabor, valorUnidade, valorVenda, estoqueAtivo,
+				estoqueVenda))
 			throw new Exception("Campos inválidos");
 
-		Venda venda = createDomain(numeroDoPedido, codigo, nomeDoCliente, sabor, valorUnidade, valorVenda, valorTotal, estoqueAtivo,
-				estoqueVenda, estoqueVendido);
+		Venda venda = createDomain(numeroDoPedido, codigo, nomeDoCliente, sabor, valorUnidade, valorVenda, valorTotal,
+				estoqueAtivo, estoqueVenda, estoqueVendido);
 		return venda;
 	}
 
-	private Venda createDomain(String numeroDoPedido, String codigo, String nomeDoCliente, String sabor, String valorUnidade,
-			String valorVenda, String valorTotal, String estoqueAtivo, String estoqueVenda, String estoqueVendido) {
+	private Venda createDomain(String numeroDoPedido, String codigo, String nomeDoCliente, String sabor,
+			String valorUnidade, String valorVenda, String valorTotal, String estoqueAtivo, String estoqueVenda,
+			String estoqueVendido) {
 		double numeroDoPedidoAsInt = 0;
 		double codigoAsInt = 0;
 		double valorUnidadeAsDouble = 0;
@@ -386,8 +373,8 @@ public class IncluirVendasWindow extends Window {
 		return venda;
 	}
 
-	private boolean validateFields(String numeroDoPedido, String codigo, String nomeDoCliente, String sabor, String valorUnidade,
-			String valorVenda, String estoqueAtivo, String estoqueVenda) {
+	private boolean validateFields(String numeroDoPedido, String codigo, String nomeDoCliente, String sabor,
+			String valorUnidade, String valorVenda, String estoqueAtivo, String estoqueVenda) {
 		if (numeroDoPedido.isEmpty()) {
 			new MessageBox("Atenção", "Digite um número de Pedido!").popup();
 			;

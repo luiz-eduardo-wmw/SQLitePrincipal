@@ -40,6 +40,7 @@ public class VendaDAO {
 		ps.setDouble(3, venda.valorUnidade);
 		ps.setDouble(4, venda.valorVenda);
 		ps.setDouble(5, venda.estoqueVenda);
+		ps.setDouble(6, venda.estoqueAtivo);
 		ps.setInt(7, venda.numeroDoPedido); //PRIMARY KEY
 		
 		

@@ -41,7 +41,7 @@ public class ListarSorvetesWindow extends Window {
 	public ListarSorvetesWindow() throws SQLException, ImageException, IOException {
 		// SORVETES
 		listaSorvetes = new ScrollContainer();
-		btIncluir = new Button("Incluir Sorvete");
+		btIncluir = new Button("Novo Sorvete");
 		sorveteDAO = new SorveteDAO();
 		sorvetesList = sorveteDAO.findAllSorvetes();
 		// FIM DE SORVETES
@@ -75,7 +75,7 @@ public class ListarSorvetesWindow extends Window {
 
 	private String[] sorveteToArray(Sorvete sorvete) {
 		String[] dadosArray = new String[4];
-		dadosArray[0] = String.valueOf(sorvete.codigo);
+		dadosArray[0] = "|||||||| " + String.valueOf(sorvete.codigo);
 		dadosArray[2] = sorvete.sabor;
 		dadosArray[1] = "R$" + String.valueOf(sorvete.valorUnidade);
 		dadosArray[3] = String.valueOf(sorvete.estoqueAtivo);
@@ -111,7 +111,6 @@ public class ListarSorvetesWindow extends Window {
 
 		// VENDAS
 		add(btListaPedidos, LEFT + 10, BOTTOM - 10);
-		add(btIncluirNovaVenda, AFTER + 10, BOTTOM - 10);
 		// FIM DE VENDAS
 
 		// SORVETES
@@ -141,13 +140,9 @@ public class ListarSorvetesWindow extends Window {
 				try {
 					sorvetesWindow = new IncluirSorvetesWindow();
 					sorvetesWindow.popup();
-				} catch (ImageException | IOException e1) {
-					e1.printStackTrace();
-				}
-				try {
 					reloadListSorvetes();
-				} catch (SQLException e) {
-					e.printStackTrace();
+				} catch (SQLException | ImageException | IOException e1) {
+					e1.printStackTrace();
 				}
 			} else if (event.target == btListaPedidos) {
 				ListarVendasWindow vendasWindow;
