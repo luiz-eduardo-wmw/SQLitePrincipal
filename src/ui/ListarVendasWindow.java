@@ -91,6 +91,11 @@ public class ListarVendasWindow extends Window {
 	@Override
 	public void initUI() {
 		montaTela();
+		try {
+			reloadListVendas();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

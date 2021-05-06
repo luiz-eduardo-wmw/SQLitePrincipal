@@ -1,6 +1,7 @@
 package ui;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import dao.SorveteDAO;
 import dao.VendaDAO;
@@ -12,6 +13,7 @@ import totalcross.sys.Vm;
 import totalcross.ui.Button;
 import totalcross.ui.Edit;
 import totalcross.ui.Label;
+import totalcross.ui.ScrollContainer;
 import totalcross.ui.Window;
 import totalcross.ui.dialog.MessageBox;
 import totalcross.ui.event.ControlEvent;
@@ -45,7 +47,9 @@ public class IncluirVendasWindow extends Window {
 	// IMPORTANDO A TABELA SORVETES
 	private SorveteDAO sorveteDAO;
 	private boolean atualizando;
-
+	// FIM
+	
+		
 	public IncluirVendasWindow() throws ImageException, IOException {
 		this.atualizando = false;
 
@@ -54,7 +58,7 @@ public class IncluirVendasWindow extends Window {
 		// INICIANDO OS EDITS
 		editNumeroDoPedido = new Edit("999999999");
 		editCodigo = new Edit("999999999");
-		editNomeDoCliente = new Edit("999999999");
+		editNomeDoCliente = new Edit("99999999999999999999999999");
 		editSabor = new Edit();
 		editValorUnidade = new Edit("999999999,99");
 		editValorVenda = new Edit("999999999,99");
@@ -139,7 +143,10 @@ public class IncluirVendasWindow extends Window {
 
 	@Override
 	public void initUI() {
+		montaTela();
+	}
 
+	private void montaTela() {
 		// INSERINDO A LOGO E O TEXTO
 		add(btLogo, LEFT + 10, TOP);
 		add(new Label("REGISTRANDO NOVA VENDA"), AFTER + 65, SAME + 10, FILL - 10, PREFERRED);
@@ -149,11 +156,11 @@ public class IncluirVendasWindow extends Window {
 		add(new Label("Numero do Pedido"), LEFT + 10, AFTER + 10);
 		add(editNumeroDoPedido, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 
-		add(new Label("Codigo"), LEFT + 10, AFTER + 10);
-		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
-
 		add(new Label("Nome do Cliente/Empresa"), LEFT + 10, AFTER + 10);
 		add(editNomeDoCliente, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
+		
+		add(new Label("Codigo do Produto"), LEFT + 10, AFTER + 10);
+		add(editCodigo, LEFT + 10, AFTER + 5, FILL - 300, PREFERRED);
 		
 		// deverá importar da outra tabela com base no código digitado
 		add(new Label("Sabor"), LEFT + 10, AFTER + 10);
@@ -184,7 +191,6 @@ public class IncluirVendasWindow extends Window {
 		} else {
 			add(btEnviar, BEFORE - 10, SAME);
 		}
-
 	}
 
 	@Override
@@ -263,6 +269,7 @@ public class IncluirVendasWindow extends Window {
 		super.onEvent(event);
 	}
 
+	
 	private void atualizandoEstoqueSorvete() {
 		double estoqueVenda = Double.parseDouble(editEstoqueVenda.getText().replace(",", "."));
 		double estoqueAtivo = Double.parseDouble(editEstoqueAtivo.getText().replace(",", "."));
