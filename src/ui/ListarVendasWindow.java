@@ -107,10 +107,6 @@ public class ListarVendasWindow extends Window {
 		add(listaVendas, LEFT, AFTER + 10, FILL, getScrollContainerSizeSorvetes());
 		try {
 			loadListVendas();
-			/*
-			 * add(btLogo, CENTER + 10, TOP); add(new Label("RELATORIO DE VENDAS"), AFTER +
-			 * 65, SAME + 10, FILL - 10, PREFERRED);
-			 */
 		} catch (SQLException e) {
 			Vm.debug(e.getMessage());
 		}
